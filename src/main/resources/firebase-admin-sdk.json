@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dolphinpay-d90e4",
+  "private_key_id": "29704b47fd75c32662c80a4814b98827df622aea",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+REygqV2RXraX\nhUAZAOXOvc4jy1A+8V58CbifG3W1K04NaItrwonqAQ3Eyj+uc35H8PFCyQ0I70M2\n9jynT4VIjzxYjWqBokNRonH3tiHcKgraPn9pLfWBXNlgDKhBhWbCP6T8FMXbsP3P\nAcRqWMMmhBsCaA3fp5CXdHGA2INlINN5QyoOlCRIR1+lAY7K+Zq4R8vakSfSt9w0\n2iDLC4Dzf2gjkzvmDiYp7b5fb4zi0R4CB5M8RoGEPNLDQvtBOoEQvctnptBKodmP\ncZKMNbT29QwQPCh5cYEaEWlmsjcLZ7GLG2Pe6wpFKDYEWcOqRhIxf4PCqpgUuj+4\ntGqvq3EdAgMBAAECggEALjhoRwUtukFAaQmROyG5MeJw/8gFq+y1r7sq0tf4XbTx\n5pb1e42MNEDiR+J72tSqoi5ZZYhytq9s7B6gOGK8dZZ6KebcrzYsVVn5hpwDmLjL\n3x2clP/5ql3UXp1kiFowTtLoMOaY9BgIaC+9N7ptWd9wskJ10FWj7e73Hb47GScX\naAvJhX+hCgDhZkxSHWoAn5y+1y8JfVvGYs2aIzH9m2he1CTDJK2klUi4W1i7BFo9\nWtOMPn4FzqkDwkNiWiSFQ7Eu10TMn8++ZRj7Znh6dCbM3ykK6NSpdHJh7tFo50SU\n52LGts6WnaLC2LvEFrYYVt9XcXX2ZCYbPhnzPuIrAQKBgQDonBBUxrHnbr9GF9s/\nchuc5Py8IEQVkyxMOGJxPG4xOXNPkJwXBehGcAmwCG3WJ0yNPwVJYJAjzJx+eMXf\nXT8jj4op5mNDLRGjjdJ47jWG+Re6pMYndezirI2p79KbFE47pWf9PSW3kUEeZ/uz\nrv1d5P5ux1iykeQTmlsvg5W+gQKBgQDRZjp0M61LRXHziR47L+0EfyYy868jyPe+\net8tTA7IS6KPUNwHWpVumvCxSt99bCKitLMLr0eBpyWyfZacHHj9rmEGHhzrxqtw\nXvFx/CqhvZ8KTIx5eGTEnaT2fpxFZ3+IcBsIw6FUVtu9d4z6d5AEj+qRrSxR99us\nZICGWz+cnQKBgAG/8suAdyQjjCLN2SNgC18hxdjwcTKsWb/1CKCLcNTD9t8ZWmM9\n8yJcg2YkmhbrUsMZP0PvCwaJ6n91DyAABpKQ6Nwp1INT2ncdgQDR4eszAn+v76Gq\nXG7UF3i4yh/KhlAijWa1SAxadl/xLk6KuXM0XsmcjElDmbCgD6GK3tyBAoGAdwmu\nYTCfaxLnXJKuZOcxzkSZ6o0tGyK788TV6mI6ZRLaLq7A5k1QdbgO7DqsIhi+98/R\nmOrjs4jZnUZXwBdPkKb48QldV4txGkhe6XV4psmtB6XMlaEjZ8JWbOo83BeiIGXa\neHj91XwrHuI/eoNNk8pchsPzVgWZE79ucPKejuECgYEAyQ09HCcUfFMbfIFMqS0l\nLizp0kb9OLhEOobTsUpSlWHD2KJASoLBE8ZtAJcszL23nIBpvOroMSR7WBIUvxnV\nQ9/Wzk+hdc3iqcM9QLvo4qnrlKCb86avxyF+jLoFaUotI2Y81IWNxDGG9swokWux\n95gNiptvVZ7nfmQ49FUmw0Q=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-jkwh8@dolphinpay-d90e4.iam.gserviceaccount.com",
+  "client_id": "102706868489113127992",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-jkwh8%40dolphinpay-d90e4.iam.gserviceaccount.com"
+}
