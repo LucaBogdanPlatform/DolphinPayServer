@@ -8,9 +8,16 @@ package com.dolphinpay.server.application;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -22,27 +29,20 @@ public class DolphinPayApplication implements ServletContextListener{
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        FileInputStream serviceAccount =
-                null;
         try {
-            serviceAccount = new FileInputStream("resources/firebase-admin-sdk.json");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        FirebaseOptions options = null;
-        try {
-            options = new FirebaseOptions.Builder()
+            ServletContext context = sce.getServletContext();
+            URL resourceContent = context.getResource("/WEB-INF/firebase-admin-sdk.json");
+            File file = new File(resourceContent.toURI());
+            FileInputStream serviceAccount = new FileInputStream(file);
+            FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://dolphinpay-d90e4.firebaseio.com")
                     .build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            
+            FirebaseApp.initializeApp(options);
+        } catch (URISyntaxException | IOException ex) {
+            Logger.getLogger(DolphinPayApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        FirebaseApp.initializeApp(options);
     }
 
     @Override

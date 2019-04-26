@@ -5,11 +5,19 @@
  */
 package com.dolphinpay.server.api;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +36,14 @@ public class TestServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, URISyntaxException {
+        
         String token = "eXyUcS9WPVI:APA91bHORz_rH-T_DONu7EGbjwAS3mxombbrYotyWC4gmubxoEtBAOJWF8SaMg5TlOtQLrXyK9bGf2Fx3xU5ZszgLK5DVJLmJ0KymVoUKCSNLwqLFU7uVLqT20Y0ODzs0AFaNHWMvIcv";
+     
         try {
             FirebaseMessaging.getInstance().send(Message.builder().setToken(token).build());
-        } catch (FirebaseMessagingException e) {
-            e.printStackTrace();
+        } catch (FirebaseMessagingException ex) {
+            Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
@@ -54,7 +64,11 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -68,7 +82,11 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
