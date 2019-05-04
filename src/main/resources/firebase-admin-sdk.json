@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "chiosco-platform",
+  "private_key_id": "1599aca21d2ebfacb3e8ce3913dad4ac628fe939",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCv8AhZUpHpobmG\nrTHjzXxoJyLnYRoRyMDyedg2JqPXKZdwdOAbhbemeRkRhijd8hZQ35yw58VkAWZL\nyNd7tO7u4nLvsiDW1fN1PuG4Zex3wY9gyA66vhLt90qkvzInxcd8dFJt3zyT6RJC\nW+dPXAQYxHRAjYDGFz0Vtcq6Fvgws/gp2+7BpeClfikoejmyvBLNqCgJjXg1UZVn\nh6oWeUSiq2bQWIYXQBibdJKAfIpD4QMW9gIpW62Vm8wmv91XvulkzNpa1+m2GM0+\niT2olSK80mDtXTFy56+BxrAPozE06DM4KUXglKKfwFYFS4lQVRqHZXXhObP798cH\nF+h6qn1tAgMBAAECggEASirioiEMUNSz/MHLa9CGtvN0o9zL3B5otG9IBb/xRrWK\nWUZz6TZMDrozJq+LT9ELtkkl6W+zRy7N3HnM2SITrZG5yTEq5dYovU7mYdFZx7xJ\nwI9lojSZj0a16VCOiLS4HU9+JkI669GPuHi8wLg2I+jBZysf06IdRqct0Jf5RbIN\nU0HMg2TjZkBa9i5pyr8YmD7znbD8i+zjS9UXmllW5qrtG2Hepeb99BhhLP8olKOP\nfCW4phkV3nHv9FZueHScHARM8qprkbTUymWHkeRJwWcWiCeCIEBt+txFMaFHKsKs\nh6GISzQ/GEwke5GaXFi9kHNizpcE5Se3aau/LIj8QwKBgQDhes+loKUXepASSCSY\nHP/y/PhQU6zH8M32TS1hq9IV21G4BErW/wANn96Ktq37LMCh9moPVFWOG6GluE3k\nmMvWGOp4cawz85HtH5BUTnu2LZZWkX13/vty2SdvTYJa1umvTY4tmkoOekaJAo79\nf41sPl12ZpQpn0CQB3k/etEbbwKBgQDHwISkEv5cKN7fVbSAsXu7FHV8XkZV9fOt\n7A0Ekg/8JzSVU4ZEue7+T34OcnmiV7SZaY13KKTY8UHX1WSZCE8IJxk+L4Grcgv7\nw63vWQ211sQQL15K4w9sRR68YiB1l2Kswjpk6ZxyYoTTLhLKk1SqcVSBiejZi1Uh\n2YCHNAZ24wKBgHos6IzPcgU51Q0C6ElAFXPdnNMxs8KW+ZMHGJr+1hQfxbTXJpI+\nlBHN2XECMV2TT0GzWp65zK32zO0V46cFIBX/ZDUlKvDvftekrbjw2dnJ89cueHTn\nxeniPprxvbtpDjB97pdJLe2QVd3xc/dqAQBw/oWkaY3wC7S/R/ScoOejAoGBAJhg\nyk6HlrYjD3F7ZcjOm76o6r7HBAzLJOrGKWAVNFB8b+aB4ulGlYQ2i8jlltg647As\nDxiZTreXw0ysoqMC7ZcgjGcdwmNRCscyDNuLKaRPgx19pQank7paOAopKO3LYCC9\nweH9O7UeZojamsciAPJMpdRzqcdaPMUnsJ5zF4NVAoGBAJGXOjqBELIIVbCNvyQO\nM+zJKySMU3tY2fUtXHBuAACGw3ebwWeMPsg6wVpo8q2gBwbI5phKLkmsXzIn4FK8\nqgulkdA1zd9ykh67+oGl/ceQJpdkPF31rg2Pr+MmcwzJq1K+/j9sOuKpM3vNUXxk\nUlDEgfTAb5GcBfxnfNq3ToTX\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-bwpjk@chiosco-platform.iam.gserviceaccount.com",
+  "client_id": "102932567705853199712",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-bwpjk%40chiosco-platform.iam.gserviceaccount.com"
+}
