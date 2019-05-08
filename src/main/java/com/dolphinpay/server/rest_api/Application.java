@@ -6,48 +6,38 @@
 package com.dolphinpay.server.rest_api;
 
 
+import com.dolphinpay.server.rest_api.utils.FirebaseUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+
+@Component
 @SpringBootApplication
-public class Application {
+public class Application extends SpringBootServletInitializer {
+
+    @Autowired
+    ServletContext servletContext;
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+        System.out.println("Running............");
+    }
+
+    @PostConstruct
+    public void contextStartupListener() {
+        FirebaseUtils.init(servletContext);
     }
 
 }
-
-
-/*
-/**
- *
- * @author U374332
-public class Application implements ServletContextListener{
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        try {
-            ServletContext context = sce.getServletContext();
-            URL resourceContent = context.getResource("/WEB-INF/firebase-admin-sdk.json");
-            File file = new File(resourceContent.toURI());
-            FileInputStream serviceAccount = new FileInputStream(file);
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://dolphinpay-d90e4.firebaseio.com")
-                    .build();
-            
-            FirebaseApp.initializeApp(options);
-        } catch (URISyntaxException | IOException ex) {
-            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        
-    }
-    
-}
-
- */

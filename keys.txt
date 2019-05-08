@@ -1,0 +1,198 @@
+CREATE TABLE `products` (
+	`p_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`p_type` INT(11) NOT NULL,
+	`p_brand` INT(11) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`p_id`),
+	INDEX `FK_products_brands` (`p_brand`),
+	INDEX `FK_products_products_types` (`p_type`),
+	CONSTRAINT `FK_products_brands` FOREIGN KEY (`p_brand`) REFERENCES `products_brands` (`b_id`),
+	CONSTRAINT `FK_products_products_types` FOREIGN KEY (`p_type`) REFERENCES `products_types` (`pt_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+
+CREATE TABLE `products_brands` (
+	`b_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`b_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `products_types` (
+	`pt_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`pt_category` INT(11) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`pt_id`),
+	INDEX `FK_products_types_products_types_categories` (`pt_category`),
+	CONSTRAINT `FK_products_types_products_types_categories` FOREIGN KEY (`pt_category`) REFERENCES `products_types_categories` (`ptc_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `products_types_categories` (
+	`ptc_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ptc_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `stands` (
+	`c_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`c_name` VARCHAR(250) NOT NULL,
+	`c_phone` VARCHAR(15) NULL DEFAULT NULL,
+	`c_address` VARCHAR(250) NOT NULL,
+	`c_latitude` FLOAT(10,6) NOT NULL,
+	`c_longitude` FLOAT(10,6) NOT NULL,
+	`c_src` VARCHAR(250) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`c_id`),
+	UNIQUE INDEX `c_name` (`c_name`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `stands_orders` (
+	`so_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`so_stand_order_state` INT(11) NOT NULL DEFAULT '1',
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`so_id`),
+	INDEX `FK_stands_orders_stands_orders_states` (`so_stand_order_state`),
+	CONSTRAINT `FK_stands_orders_stands_orders_states` FOREIGN KEY (`so_stand_order_state`) REFERENCES `stands_orders_states` (`sos_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `stands_orders_units` (
+	`sou_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`sou_order` INT(11) NOT NULL,
+	`sou_stand_product` INT(11) NOT NULL,
+	`sou_state` INT(11) NOT NULL DEFAULT '2',
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`sou_id`),
+	INDEX `FK_stands_orders_units_stands_products` (`sou_stand_product`),
+	INDEX `FK_stands_orders_units_stands_orders_states` (`sou_state`),
+	INDEX `FK_stands_orders_units_stands_orders` (`sou_order`),
+	CONSTRAINT `FK_stands_orders_units_stands_orders` FOREIGN KEY (`sou_order`) REFERENCES `stands_orders` (`so_id`),
+	CONSTRAINT `FK_stands_orders_units_stands_orders_states` FOREIGN KEY (`sou_state`) REFERENCES `stands_orders_states` (`sos_id`),
+	CONSTRAINT `FK_stands_orders_units_stands_products` FOREIGN KEY (`sou_stand_product`) REFERENCES `stands_products` (`sp_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `stands_products` (
+	`sp_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`sp_stand` INT(11) NOT NULL,
+	`sp_product` INT(11) NOT NULL,
+	`sp_price` INT(11) NOT NULL DEFAULT '0',
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`sp_id`),
+	UNIQUE INDEX `sp_stand_sp_product` (`sp_stand`, `sp_product`),
+	INDEX `FK_stands_products_products` (`sp_product`),
+	CONSTRAINT `FK_stands_products_products` FOREIGN KEY (`sp_product`) REFERENCES `products` (`p_id`),
+	CONSTRAINT `FK_stands_products_stands` FOREIGN KEY (`sp_stand`) REFERENCES `stands` (`c_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+
+
+CREATE TABLE `stands_products_advised` (
+	`spa_product` INT(11) NOT NULL,
+	`spa_product_advised` INT(11) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`spa_product`, `spa_product_advised`),
+	INDEX `FK_stands_products_advised_stands_products_2` (`spa_product_advised`),
+	CONSTRAINT `FK_stands_products_advised_stands_products` FOREIGN KEY (`spa_product`) REFERENCES `stands_products` (`sp_id`),
+	CONSTRAINT `FK_stands_products_advised_stands_products_2` FOREIGN KEY (`spa_product_advised`) REFERENCES `stands_products` (`sp_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `stands_roles` (
+	`r_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`r_name` VARCHAR(250) NOT NULL,
+	`r_description` VARCHAR(250) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`r_id`),
+	UNIQUE INDEX `r_name` (`r_name`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `stands_rooms` (
+	`r_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`r_chiosco_id` INT(11) NOT NULL,
+	`r_name` VARCHAR(250) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`r_id`),
+	UNIQUE INDEX `r_chiosco_id` (`r_chiosco_id`, `r_name`),
+	CONSTRAINT `stands_rooms_ibfk_1` FOREIGN KEY (`r_chiosco_id`) REFERENCES `stands` (`c_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `users` (
+	`u_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`u_username` VARCHAR(250) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`u_id`),
+	UNIQUE INDEX `u_username` (`u_username`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `users_devices` (
+	`ud_user` INT(11) NOT NULL,
+	`ud_firebase_token` VARCHAR(250) NOT NULL,
+	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ud_user`, `ud_firebase_token`),
+	CONSTRAINT `users_devices_ibfk_1` FOREIGN KEY (`ud_user`) REFERENCES `users` (`u_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+CREATE TABLE `users_stands_roles` (
+	`ur_user` INT(11) NOT NULL,
+	`ur_role` INT(11) NOT NULL,
+	`ur_stand` INT(11) NOT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ur_user`, `ur_role`, `ur_stand`),
+	INDEX `ur_role` (`ur_role`),
+	INDEX `ur_stand` (`ur_stand`),
+	INDEX `ur_user` (`ur_user`),
+	CONSTRAINT `users_stands_roles_ibfk_1` FOREIGN KEY (`ur_user`) REFERENCES `users` (`u_id`),
+	CONSTRAINT `users_stands_roles_ibfk_2` FOREIGN KEY (`ur_role`) REFERENCES `stands_roles` (`r_id`),
+	CONSTRAINT `users_stands_roles_ibfk_3` FOREIGN KEY (`ur_stand`) REFERENCES `stands` (`c_id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+
+eb setenv SPRING_DATASOURCE_URL=jdbc:mysql://aaqa20uuz5nx5.cctjjxoxfho2.us-west-2.rds.amazonaws.com:3306/ebdb SPRING_DATASOURCE_USERNAME=dolphinpaydb SPRING_DATASOURCE_PASSWORD=dolphinpaydb
