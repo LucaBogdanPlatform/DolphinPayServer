@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.users;
 
+import com.dolphinpay.server.rest_api.v1.platforms_standards.PlatformStandard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,9 @@ public class User {
     @Column(name = "z_email")
     private String email;
 
-    // TODO FOREIGN KEY
-    @Column(name = "z_standard_platform")
-    private int standard_platform;
+    @OneToOne
+    @JoinColumn(name = "z_standard_platform")
+    private PlatformStandard standard_platform;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
