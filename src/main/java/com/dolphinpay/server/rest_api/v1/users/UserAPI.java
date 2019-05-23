@@ -23,9 +23,5 @@ public class UserAPI {
     @NonNull
     private UserService service;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> findAll() {
-        return ResponseEntity.ok(service.findAll());
-    }
 
 }

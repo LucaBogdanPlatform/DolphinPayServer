@@ -1,9 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.platforms_standards;
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
-import com.dolphinpay.server.rest_api.v1.users.User;
-import com.dolphinpay.server.rest_api.v1.users.UserAPI;
-import com.dolphinpay.server.rest_api.v1.users.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +23,4 @@ public class PlatformStandardAPI {
     @NonNull
     private PlatformStandardService service;
 
-    @GetMapping("/platformsStrands")
-    public ResponseEntity<List<PlatformStandard>> findAll() {
-        return ResponseEntity.ok(service.findAll());
-    }
 }
