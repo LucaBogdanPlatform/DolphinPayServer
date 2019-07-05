@@ -1,38 +1,34 @@
-package com.dolphinpay.server.rest_api.v1.users;
+package com.dolphinpay.server.rest_api.v1.users_devices;
 
-import com.dolphinpay.server.rest_api.v1.platforms_standards.PlatformStandard;
+import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"z_username", "z_email"})})
+@Table(name = "users_devices")
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class User {
+public class UsersDevices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "z_id", insertable = false)
+    @Column(name = "z_id")
     private int id;
 
-    @Column(name = "z_username")
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "z_user")
+    private User user;
 
-    @Column(name = "z_email")
-    private String email;
-
-    @OneToOne
-    @JoinColumn(name = "z_standard_platform", insertable = false)
-    private PlatformStandard standardPlatform;
+    @Column(name = "z_firebase_token")
+    private String firebaseToken;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

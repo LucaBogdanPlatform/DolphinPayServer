@@ -7,8 +7,11 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Data
-class Credentials {
+public class Credentials {
     @NonNull
     private String idToken;
-    private String username;
+    @NonNull
+    private String email;
+    @NonNull
+    private String firebaseToken;
 }
