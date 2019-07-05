@@ -1,7 +1,7 @@
-package com.dolphinpay.server.rest_api.v1.platforms_standards;
+package com.dolphinpay.server.rest_api.v1.platforms_subscribers;
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
-import com.dolphinpay.server.rest_api.v1.platforms_roles_and_permissions.PlatformsRolesAndPermissions;
+import com.dolphinpay.server.rest_api.v1.platforms_standards.PlatformStandard;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +17,12 @@ import java.util.List;
 @RequestMapping(UtilsV1.BASE_URL)
 @Slf4j
 @RequiredArgsConstructor
-public class PlatformStandardAPI {
+public class PlatformSubscribersAPI {
 
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(PlatformStandardAPI.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(PlatformSubscribersAPI.class);
 
     @NonNull
-    private PlatformStandardService service;
+    private PlatformSubscribersService service;
 
 
 }
