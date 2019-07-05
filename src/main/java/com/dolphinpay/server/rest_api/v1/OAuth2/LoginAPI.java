@@ -2,7 +2,6 @@ package com.dolphinpay.server.rest_api.v1.OAuth2;
 
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
-import com.dolphinpay.server.rest_api.v1.platforms_standards.PlatformStandardService;
 import com.dolphinpay.server.rest_api.v1.users.User;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
 import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevices;
@@ -11,10 +10,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuth;
 
@@ -42,6 +43,12 @@ public class LoginAPI {
 
     @PostMapping("/auth")
     public ResponseEntity login(@RequestBody Credentials credentials) {
+        if (credentials == null ||
+                credentials.getIdToken() == null ||
+                credentials.getEmail() == null ||
+                credentials.getFirebaseToken() == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         return checkAuth(credentials, () -> {
             User user = userService.findByEmail(credentials.getEmail());
             user = user == null ? new User() : user;

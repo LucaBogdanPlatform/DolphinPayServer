@@ -1,6 +1,5 @@
-package com.dolphinpay.server.rest_api.v1.platforms_standards;
+package com.dolphinpay.server.rest_api.v1.platforms_roles;
 
-import com.dolphinpay.server.rest_api.v1.platforms_roles.PlatformsRoles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,22 +11,18 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "platforms_standards")
+@Table(name = "platforms_roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"z_name"})})
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PlatformStandard {
+public class PlatformsRoles {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "z_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "z_id", insertable = false)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "z_role")
-    private PlatformsRoles role;
-
-    @Column(name = "z_name", unique = true)
+    @Column(name = "z_name")
     private String name;
 
     @CreationTimestamp
