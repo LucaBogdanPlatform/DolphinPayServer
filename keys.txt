@@ -1,4 +1,4 @@
-CREATE TABLE `products` (
+CREATE TABLE `standsRoomsCategories` (
 	`p_id` INT(11) NOT NULL AUTO_INCREMENT,
 	`p_type` INT(11) NOT NULL,
 	`p_brand` INT(11) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE `stands_products` (
 	PRIMARY KEY (`sp_id`),
 	UNIQUE INDEX `sp_stand_sp_product` (`sp_stand`, `sp_product`),
 	INDEX `FK_stands_products_products` (`sp_product`),
-	CONSTRAINT `FK_stands_products_products` FOREIGN KEY (`sp_product`) REFERENCES `products` (`p_id`),
+	CONSTRAINT `FK_stands_products_products` FOREIGN KEY (`sp_product`) REFERENCES `standsRoomsCategories` (`p_id`),
 	CONSTRAINT `FK_stands_products_stands` FOREIGN KEY (`sp_stand`) REFERENCES `stands` (`c_id`)
 )
 COLLATE='latin1_swedish_ci'
