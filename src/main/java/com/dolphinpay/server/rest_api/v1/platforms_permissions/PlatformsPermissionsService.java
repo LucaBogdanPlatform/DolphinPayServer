@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.platforms_permissions;
 
+import com.dolphinpay.server.rest_api.v1.platforms_roles_and_permissions.PlatformsRolesAndPermissions;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class PlatformsPermissionsService {
 
     public void deleteById(Integer id) {
         platformsPermissionsRepository.deleteById(id);
+    }
+
+    public List<PlatformsPermissions> findRolePermissions(int roleId) {
+        return platformsPermissionsRepository.findRolePermissions(roleId);
     }
 
 }

@@ -28,5 +28,4 @@ public class PlatformsRolesAndPermissionsService {
     public void deleteById(Integer id) {
         platformsRolesAndPermissionsRepository.deleteById(id);
     }
-
 }

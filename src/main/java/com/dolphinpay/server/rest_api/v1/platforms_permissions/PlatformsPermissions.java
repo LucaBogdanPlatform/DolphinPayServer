@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.platforms_permissions;
 
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONGenericPlatform;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "platforms_permissions", uniqueConstraints = {@UniqueConstraint(columnNames = {"z_name"})})
@@ -34,4 +36,11 @@ public class PlatformsPermissions {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+
+    public JSONGenericPlatform.JSONPermission getHttpResponse() {
+        JSONGenericPlatform.JSONPermission jsonPermission = new JSONGenericPlatform.JSONPermission();
+        jsonPermission.setName(this.name);
+        return jsonPermission;
+    }
 }

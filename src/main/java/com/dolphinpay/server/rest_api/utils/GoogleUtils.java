@@ -1,7 +1,10 @@
 package com.dolphinpay.server.rest_api.utils;
 
 import com.dolphinpay.server.rest_api.interfaces.ExecutableRequest;
-import com.dolphinpay.server.rest_api.v1.OAuth2.Credentials;
+import com.dolphinpay.server.rest_api.interfaces.UserExecutableRequest;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONCredentials;
+import com.dolphinpay.server.rest_api.v1.users.User;
+import com.dolphinpay.server.rest_api.v1.users.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -10,7 +13,6 @@ import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -91,7 +93,7 @@ public class GoogleUtils {
             if (idToken == null) {
                 idToken = newVerifier.verify(idTokenString);
             }
-            if(idToken == null) {
+            if (idToken == null) {
                 return GoogleValidationResponse.buildInvalidIdToken();
             }
             return GoogleValidationResponse.buildSuccessValidation(idToken.getPayload());
@@ -103,9 +105,11 @@ public class GoogleUtils {
     }
 
 
-
-    public static ResponseEntity checkAuth(Credentials credentials, ExecutableRequest executableRequest) {
-        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(credentials.getIdToken());
+    public static ResponseEntity checkAuth(JSONCredentials JSONCredentials, ExecutableRequest executableRequest) {
+        if (JSONCredentials == null || !JSONCredentials.isValid()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(JSONCredentials.getIdToken());
         if (validation.isFailed()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else if (validation.isInvalidIdToken()) {
@@ -113,5 +117,29 @@ public class GoogleUtils {
         } else {
             return executableRequest.execute();
         }
+    }
+
+    public static ResponseEntity checkAuthAndUser(
+            UserService userService,
+            JSONCredentials JSONCredentials,
+            UserExecutableRequest userExecutableRequest) {
+        if (JSONCredentials == null || !JSONCredentials.isValid()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.findByEmail(JSONCredentials.getEmail());
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(JSONCredentials.getIdToken());
+        if (validation.isFailed()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else if (validation.isInvalidIdToken()) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        } else {
+            return userExecutableRequest.execute(user);
+        }
+
+
     }
 }

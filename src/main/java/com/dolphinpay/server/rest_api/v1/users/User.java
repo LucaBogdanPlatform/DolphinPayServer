@@ -1,12 +1,13 @@
 package com.dolphinpay.server.rest_api.v1.users;
 
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONGenericPlatform;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONUser;
 import com.dolphinpay.server.rest_api.v1.platforms_standards.PlatformStandard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -43,4 +44,13 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+    public JSONUser getHttpResponse(JSONGenericPlatform jsonGenericPlatform) {
+        JSONUser jsonUser = new JSONUser();
+        jsonUser.setId(this.id);
+        jsonUser.setUsername(this.username);
+        jsonUser.setEmail(this.email);
+        jsonUser.setGenericPlatform(jsonGenericPlatform);
+        return jsonUser;
+    }
 }

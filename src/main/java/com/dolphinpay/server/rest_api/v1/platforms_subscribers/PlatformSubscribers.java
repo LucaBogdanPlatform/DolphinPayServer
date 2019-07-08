@@ -40,9 +40,6 @@ public class PlatformSubscribers {
     @Column(name = "z_name")
     private String name;
 
-    @Column(name = "z_state_on", insertable = false)
-    private boolean active;
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_creation_time")
