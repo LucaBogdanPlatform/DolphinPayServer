@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuth;
 
@@ -42,22 +45,21 @@ public class UserAPI {
 //    }
 
     @PostMapping(UtilsV1.URLS.authentication)
-    public ResponseEntity login(@RequestBody JSONCredentials JSONCredentials) {
-        return checkAuth(JSONCredentials, () -> {
+    public ResponseEntity login(@RequestBody JSONCredentials jsonCredentials) {
+        return checkAuth(jsonCredentials, () -> {
             PlatformStandard platformStandard = platformStandardService.findAll().get(0);
 
-
-            User user = userService.findByEmail(JSONCredentials.getEmail());
+            User user = userService.findByEmail(jsonCredentials.getEmail());
             user = user == null ? new User() : user;
-            user.setUsername(JSONCredentials.getEmail());
-            user.setEmail(JSONCredentials.getEmail());
+            user.setUsername(jsonCredentials.getEmail());
+            user.setEmail(jsonCredentials.getEmail());
             user.setStandardPlatform(platformStandard);
             user = userService.save(user);
 
             UsersDevices usersDevices = usersDevicesService.findByUserId(user.getId());
             usersDevices = usersDevices == null ? new UsersDevices() : usersDevices;
             usersDevices.setUser(user);
-            usersDevices.setFirebaseToken(JSONCredentials.getFirebaseToken());
+            usersDevices.setFirebaseToken(jsonCredentials.getFirebaseToken());
             usersDevicesService.save(usersDevices);
             return ResponseEntity.ok(user.getHttpResponse(platformStandard.getHttpResponse(platformsPermissionsService.findRolePermissions(
                     user.getStandardPlatform().getRole().getId()

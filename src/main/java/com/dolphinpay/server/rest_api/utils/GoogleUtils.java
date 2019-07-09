@@ -105,11 +105,11 @@ public class GoogleUtils {
     }
 
 
-    public static ResponseEntity checkAuth(JSONCredentials JSONCredentials, ExecutableRequest executableRequest) {
-        if (JSONCredentials == null || !JSONCredentials.isValid()) {
+    public static ResponseEntity checkAuth(JSONCredentials jsonCredentials, ExecutableRequest executableRequest) {
+        if (jsonCredentials == null || !jsonCredentials.isValid()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(JSONCredentials.getIdToken());
+        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(jsonCredentials.getIdToken());
         if (validation.isFailed()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else if (validation.isInvalidIdToken()) {
@@ -121,17 +121,17 @@ public class GoogleUtils {
 
     public static ResponseEntity checkAuthAndUser(
             UserService userService,
-            JSONCredentials JSONCredentials,
+            JSONCredentials jsonCredentials,
             UserExecutableRequest userExecutableRequest) {
-        if (JSONCredentials == null || !JSONCredentials.isValid()) {
+        if (jsonCredentials == null || !jsonCredentials.isValid()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        User user = userService.findByEmail(JSONCredentials.getEmail());
+        User user = userService.findByEmail(jsonCredentials.getEmail());
         if (user == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
-        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(JSONCredentials.getIdToken());
+        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(jsonCredentials.getIdToken());
         if (validation.isFailed()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else if (validation.isInvalidIdToken()) {
