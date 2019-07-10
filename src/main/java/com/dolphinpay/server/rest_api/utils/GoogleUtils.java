@@ -2,6 +2,7 @@ package com.dolphinpay.server.rest_api.utils;
 
 import com.dolphinpay.server.rest_api.interfaces.ExecutableRequest;
 import com.dolphinpay.server.rest_api.interfaces.UserExecutableRequest;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONAuthCredentials;
 import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONCredentials;
 import com.dolphinpay.server.rest_api.v1.users.User;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
@@ -121,7 +122,7 @@ public class GoogleUtils {
 
     public static ResponseEntity checkAuthAndUser(
             UserService userService,
-            JSONCredentials jsonCredentials,
+            JSONAuthCredentials jsonCredentials,
             UserExecutableRequest userExecutableRequest) {
         if (jsonCredentials == null || !jsonCredentials.isValid()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

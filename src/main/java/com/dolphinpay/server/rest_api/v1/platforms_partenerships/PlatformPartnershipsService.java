@@ -2,9 +2,10 @@ package com.dolphinpay.server.rest_api.v1.platforms_partenerships;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,10 +13,6 @@ import java.util.Optional;
 public class PlatformPartnershipsService {
     @NonNull
     private PlatformPartnershipsRepository platformPartnershipsRepository;
-
-    public List<PlatformPartnerships> findAll() {
-        return platformPartnershipsRepository.findAll();
-    }
 
     public Optional<PlatformPartnerships> findById(Integer id) {
         return platformPartnershipsRepository.findById(id);
@@ -27,5 +24,13 @@ public class PlatformPartnershipsService {
 
     public void deleteById(Integer id) {
         platformPartnershipsRepository.deleteById(id);
+    }
+
+    public Page<PlatformPartnerships> findAll(Pageable pageable) {
+        return platformPartnershipsRepository.findAll(pageable);
+    }
+
+    public long count() {
+        return platformPartnershipsRepository.count();
     }
 }
