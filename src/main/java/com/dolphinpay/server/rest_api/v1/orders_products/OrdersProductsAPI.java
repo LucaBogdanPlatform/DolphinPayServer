@@ -23,9 +23,4 @@ public class OrdersProductsAPI {
     @NonNull
     private OrdersProductsService service;
 
-    @GetMapping("/orders/products")
-    public ResponseEntity getAll() {
-        return ResponseEntity.ok(service.findAll());
-    }
-
 }

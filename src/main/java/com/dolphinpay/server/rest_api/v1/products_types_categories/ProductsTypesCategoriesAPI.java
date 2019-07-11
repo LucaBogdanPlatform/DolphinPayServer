@@ -20,9 +20,4 @@ public class ProductsTypesCategoriesAPI {
 
     @NonNull
     private ProductsTypesCategoriesService service;
-
-    @GetMapping("/products/brands")
-    public ResponseEntity getAll(){
-        return ResponseEntity.ok(service.findAll());
-    }
 }
