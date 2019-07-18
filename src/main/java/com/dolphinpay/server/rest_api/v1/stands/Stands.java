@@ -1,9 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.stands;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,4 +28,16 @@ public class Stands {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+    public JSONStands getResponse() {
+        return JSONStands.builder().id(this.id).build();
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class JSONStands {
+        private int id;
+    }
 }

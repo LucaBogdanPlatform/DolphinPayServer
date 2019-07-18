@@ -2,7 +2,6 @@ package com.dolphinpay.server.rest_api.v1.platforms_partenerships;
 
 import com.dolphinpay.server.rest_api.v1.platforms_roles.PlatformsRoles;
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
-import com.dolphinpay.server.rest_api.v1.stands_rooms.StandsRooms;
 import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,4 +49,6 @@ public class PlatformPartnerships {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+
 }

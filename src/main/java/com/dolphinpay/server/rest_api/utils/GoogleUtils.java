@@ -122,25 +122,22 @@ public class GoogleUtils {
 
     public static ResponseEntity checkAuthAndUser(
             UserService userService,
-            JSONAuthCredentials jsonCredentials,
+            String token,
             UserExecutableRequest userExecutableRequest) {
-        if (jsonCredentials == null || !jsonCredentials.isValid()) {
+        if (Objects.isNull(token)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-
-        User user = userService.findByEmail(jsonCredentials.getEmail());
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
-        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(jsonCredentials.getIdToken());
+        GoogleUtils.GoogleValidationResponse validation = GoogleUtils.validate(token);
         if (validation.isFailed()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else if (validation.isInvalidIdToken()) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         } else {
+            User user = userService.findByEmail(validation.payload.getEmail());
+            if (user == null) {
+                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            }
             return userExecutableRequest.execute(user);
         }
-
-
     }
 }

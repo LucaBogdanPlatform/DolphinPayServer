@@ -10,5 +10,6 @@ public class UtilsV1 {
     public static class URLS {
         public static final String authentication = "/auth";
         public static final String platformsPartnerships = "/platforms/partnerships";
+        public static final String stands = "/stands";
     }
 }
