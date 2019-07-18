@@ -1,9 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.products_types_categories;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,4 +28,16 @@ public class ProductsTypesCategories {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+    public JSONProductsTypesCategories getResponse() {
+        return JSONProductsTypesCategories.builder().id(this.id).build();
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class JSONProductsTypesCategories {
+        private int id;
+    }
 }

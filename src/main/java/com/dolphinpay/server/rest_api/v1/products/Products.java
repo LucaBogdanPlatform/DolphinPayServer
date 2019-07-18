@@ -3,10 +3,7 @@ package com.dolphinpay.server.rest_api.v1.products;
 import com.dolphinpay.server.rest_api.v1.products_brands.ProductsBrands;
 import com.dolphinpay.server.rest_api.v1.products_types.ProductsTypes;
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -49,4 +46,23 @@ public class Products {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+    public JSONProducts getResponse() {
+        return JSONProducts
+                .builder()
+                .id(this.id)
+                .type(this.type.getResponse())
+                .brand(this.brand.getResponse())
+                .build();
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class JSONProducts {
+        private int id;
+        private ProductsTypes.JSONProductsTypes type;
+        private ProductsBrands.JSONProductsBrands brand;
+    }
 }
