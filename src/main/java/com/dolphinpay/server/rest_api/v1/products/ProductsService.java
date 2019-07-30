@@ -2,6 +2,8 @@ package com.dolphinpay.server.rest_api.v1.products;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,12 @@ public class ProductsService {
 
     public List<Products> findAll() {
         return productsRepository.findAll();
+    }
+
+    public Page<Products> findAll(Products.Filter filter, Pageable pageable) {
+
+
+        return null;
     }
 
     public Optional<Products> findById(Integer id) {

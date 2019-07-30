@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.products;
 
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONProductsFilter;
 import com.dolphinpay.server.rest_api.v1.products_brands.ProductsBrands;
 import com.dolphinpay.server.rest_api.v1.products_types.ProductsTypes;
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
@@ -64,5 +65,14 @@ public class Products {
         private int id;
         private ProductsTypes.JSONProductsTypes type;
         private ProductsBrands.JSONProductsBrands brand;
+    }
+
+    @Data
+    @Builder
+    public static class Filter{
+        private Integer stand;
+        private String name;
+        private Integer category;
+        private Integer type;
     }
 }
