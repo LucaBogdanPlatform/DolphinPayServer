@@ -48,6 +48,7 @@ public class PlatformStandard {
         JSONGenericPlatform jsonGenericPlatform = new JSONGenericPlatform();
         jsonGenericPlatform.setId(this.id);
         jsonGenericPlatform.setName(this.name);
+        jsonGenericPlatform.setCreationDate(this.creationTime);
         JSONGenericPlatform.JSONRole jsonRoles = role.getHttpResponse(jsonRolePermissions);
         jsonGenericPlatform.setRole(jsonRoles);
         return jsonGenericPlatform;

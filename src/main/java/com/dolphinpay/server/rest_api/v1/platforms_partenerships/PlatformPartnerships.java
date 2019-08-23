@@ -1,5 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.platforms_partenerships;
 
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONGenericPlatform;
+import com.dolphinpay.server.rest_api.v1.platforms_permissions.PlatformsPermissions;
 import com.dolphinpay.server.rest_api.v1.platforms_roles.PlatformsRoles;
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
 import com.dolphinpay.server.rest_api.v1.users.User;
@@ -12,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "platforms_partnerships")
@@ -51,4 +54,13 @@ public class PlatformPartnerships {
     private Date lastUpdateTime;
 
 
+    public JSONGenericPlatform getHttpResponseStandard(List<PlatformsPermissions> jsonRolePermissions) {
+        JSONGenericPlatform jsonGenericPlatform = new JSONGenericPlatform();
+        jsonGenericPlatform.setId(this.id);
+        jsonGenericPlatform.setName(this.name);
+        jsonGenericPlatform.setCreationDate(this.creationTime);
+        JSONGenericPlatform.JSONRole jsonRoles = role.getHttpResponse(jsonRolePermissions);
+        jsonGenericPlatform.setRole(jsonRoles);
+        return jsonGenericPlatform;
+    }
 }

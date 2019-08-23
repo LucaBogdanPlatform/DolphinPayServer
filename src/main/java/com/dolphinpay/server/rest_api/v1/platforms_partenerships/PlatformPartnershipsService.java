@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.platforms_partenerships;
 
+import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,12 +23,17 @@ public class PlatformPartnershipsService {
         return platformPartnershipsRepository.save(platformPartnerships);
     }
 
+
     public void deleteById(Integer id) {
         platformPartnershipsRepository.deleteById(id);
     }
 
     public Page<PlatformPartnerships> findAll(Pageable pageable) {
         return platformPartnershipsRepository.findAll(pageable);
+    }
+
+    public PlatformPartnerships[] findAll(User user){
+        return platformPartnershipsRepository.findByUser(user);
     }
 
     public long count() {

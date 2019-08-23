@@ -1,5 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.platforms_subscribers;
 
+import com.dolphinpay.server.rest_api.v1.platforms_partenerships.PlatformPartnerships;
+import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,10 @@ public class PlatformSubscribersService {
 
     public List<PlatformSubscribers> findAll() {
         return platformSubscribersRepository.findAll();
+    }
+
+    public PlatformSubscribers[] findAll(User user){
+        return platformSubscribersRepository.findByUser(user);
     }
 
     public Optional<PlatformSubscribers> findById(Integer id) {
