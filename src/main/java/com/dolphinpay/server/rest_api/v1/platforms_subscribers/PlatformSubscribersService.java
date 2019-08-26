@@ -1,6 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.platforms_subscribers;
 
 import com.dolphinpay.server.rest_api.v1.platforms_partenerships.PlatformPartnerships;
+import com.dolphinpay.server.rest_api.v1.products_types_categories.ProductsTypesCategories;
 import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +35,5 @@ public class PlatformSubscribersService {
     public void deleteById(Integer id) {
         platformSubscribersRepository.deleteById(id);
     }
+
 }

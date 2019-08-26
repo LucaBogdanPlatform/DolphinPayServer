@@ -29,4 +29,7 @@ public class ProductsTypesCategoriesService {
         productsTypesCategoriesRepository.deleteById(id);
     }
 
+    public ProductsTypesCategories[] getAllCategoriesOfRoom(Integer roomId){
+        return productsTypesCategoriesRepository.getCategoriesOfRoom(roomId);
+    }
 }

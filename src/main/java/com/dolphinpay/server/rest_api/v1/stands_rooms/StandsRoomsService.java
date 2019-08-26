@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.stands_rooms;
 
+import com.dolphinpay.server.rest_api.v1.products_types_categories.ProductsTypesCategories;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
