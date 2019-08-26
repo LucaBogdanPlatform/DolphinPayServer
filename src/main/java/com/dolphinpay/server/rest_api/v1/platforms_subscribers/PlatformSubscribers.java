@@ -58,6 +58,7 @@ public class PlatformSubscribers {
         jsonGenericPlatform.setId(this.id);
         jsonGenericPlatform.setName(this.name);
         jsonGenericPlatform.setCreationDate(this.creationTime);
+        jsonGenericPlatform.setRoomId(this.room.getId());
         JSONGenericPlatform.JSONRole jsonRoles = role.getHttpResponse(jsonRolePermissions);
         jsonGenericPlatform.setRole(jsonRoles);
         return jsonGenericPlatform;

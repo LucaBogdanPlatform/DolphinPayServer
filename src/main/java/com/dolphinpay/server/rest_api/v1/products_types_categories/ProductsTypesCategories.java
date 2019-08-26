@@ -19,6 +19,12 @@ public class ProductsTypesCategories {
     @Column(name = "z_id", insertable = false)
     private int id;
 
+    @Column(name = "z_name")
+    private String name;
+
+    @Column(name = "z_position_mapping")
+    private int positionMapping;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_creation_time")
@@ -30,7 +36,11 @@ public class ProductsTypesCategories {
     private Date lastUpdateTime;
 
     public JSONProductsTypesCategories getResponse() {
-        return JSONProductsTypesCategories.builder().id(this.id).build();
+        return JSONProductsTypesCategories.builder()
+                .id(this.id)
+                .name(this.name)
+                .positionMapping(this.positionMapping)
+                .build();
     }
 
     @Data
@@ -39,5 +49,7 @@ public class ProductsTypesCategories {
     @NoArgsConstructor
     public static class JSONProductsTypesCategories {
         private int id;
+        private String name;
+        private int positionMapping;
     }
 }
