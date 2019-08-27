@@ -17,6 +17,7 @@ public class JSONGenericPlatform {
     private JSONRole role;
     private Date creationDate;
     private int roomId; // Used only for subscriber platforms
+    private int standId;
 
 
     @Data

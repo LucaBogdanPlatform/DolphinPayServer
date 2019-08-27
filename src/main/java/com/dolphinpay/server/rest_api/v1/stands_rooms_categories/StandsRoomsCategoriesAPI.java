@@ -84,9 +84,18 @@ public class StandsRoomsCategoriesAPI {
             if (!standsRooms.isPresent() || !category.isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
-
             ProductsTypesCategories ptc = category.get();
             StandsRooms sr = standsRooms.get();
+
+            Optional<StandsRoomsCategories> item = service.findById(StandsRoomsCategoriesIds.builder()
+                    .productCategory(ptc.getId())
+                    .room(sr.getId())
+                    .build()
+            );
+
+            if (item.isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
 
             service.save(new StandsRoomsCategories(
                     StandsRoomsCategoriesIds.builder()
