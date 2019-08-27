@@ -1,9 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.platforms_subscribers;
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
-import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONGenericPlatform;
-import com.dolphinpay.server.rest_api.v1.platforms_partenerships.PlatformPartnerships;
-import com.dolphinpay.server.rest_api.v1.platforms_standards.PlatformStandard;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,11 +9,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuthAndUser;
 
@@ -33,4 +31,29 @@ public class PlatformSubscribersAPI {
     @NonNull
     private PlatformSubscribersService service;
 
+    @Transactional
+    @DeleteMapping(UtilsV1.URLS.deletePlatformSubscriber)
+    @ApiOperation(
+            value = "Delete a specific user platform subscriber"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity deleteCategoryFromRoom(
+            @PathVariable Integer platformId,
+            @RequestParam String token) {
+        return checkAuthAndUser(userService, token, (user) -> {
+            Optional<PlatformSubscribers> platformSubscribers = service.findByUserAndId(user, platformId);
+
+            if (!platformSubscribers.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+
+            service.deleteById(platformSubscribers.get().getId());
+            return ResponseEntity.ok(HttpStatus.OK);
+        });
+    }
 }

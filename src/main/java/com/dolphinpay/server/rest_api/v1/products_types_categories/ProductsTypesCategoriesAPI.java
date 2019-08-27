@@ -57,4 +57,32 @@ public class ProductsTypesCategoriesAPI {
             return ResponseEntity.ok(productsTypesCategories);
         });
     }
+
+
+    @GetMapping(UtilsV1.URLS.categoriesOfStand)
+    @ApiOperation(
+            value = "Get all product categories of a specific stand",
+            response = ProductsTypesCategories.JSONProductsTypesCategories.class
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity getAllProductsCategoriesOfStand(
+            @RequestParam String token,
+            @PathVariable Integer standId) {
+        return checkAuthAndUser(userService, token, (user) -> {
+            ArrayList<ProductsTypesCategories.JSONProductsTypesCategories> productsTypesCategories = new ArrayList<>();
+
+
+            ProductsTypesCategories[] result = service.getAllCategoriesOfStand(standId);
+            for (ProductsTypesCategories p : result) {
+                productsTypesCategories.add(p.getResponse());
+            }
+
+            return ResponseEntity.ok(productsTypesCategories);
+        });
+    }
 }

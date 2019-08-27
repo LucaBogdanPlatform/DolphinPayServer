@@ -25,7 +25,4 @@ public class StandsRoomsAPI {
 
     @NonNull
     private StandsRoomsService service;
-
-    @NonNull
-    private UserService userService;
 }

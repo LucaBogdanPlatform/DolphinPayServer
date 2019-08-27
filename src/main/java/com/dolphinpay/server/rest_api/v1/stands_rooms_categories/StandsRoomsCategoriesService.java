@@ -17,7 +17,7 @@ public class StandsRoomsCategoriesService {
         return standsRoomsCategoriesRepository.findAll();
     }
 
-    public Optional<StandsRoomsCategories> findById(Integer id) {
+    public Optional<StandsRoomsCategories> findById(StandsRoomsCategoriesIds id) {
         return standsRoomsCategoriesRepository.findById(id);
     }
 
@@ -25,7 +25,8 @@ public class StandsRoomsCategoriesService {
         return standsRoomsCategoriesRepository.save(standsRoomsCategories);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteById(StandsRoomsCategoriesIds id) {
         standsRoomsCategoriesRepository.deleteById(id);
     }
+
 }

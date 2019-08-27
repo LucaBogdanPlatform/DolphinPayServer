@@ -1,10 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.stands_rooms;
 
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +13,7 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 public class StandsRooms {
     @Id

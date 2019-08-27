@@ -32,4 +32,8 @@ public class ProductsTypesCategoriesService {
     public ProductsTypesCategories[] getAllCategoriesOfRoom(Integer roomId){
         return productsTypesCategoriesRepository.getCategoriesOfRoom(roomId);
     }
+
+    public ProductsTypesCategories[] getAllCategoriesOfStand(Integer standId){
+        return productsTypesCategoriesRepository.getCategoriesOfStand(standId);
+    }
 }

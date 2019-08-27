@@ -12,6 +12,10 @@ public class UtilsV1 {
         public static final String platformsAll = "/platforms/all";
         public static final String platformsPartnerships = "/platforms/partnerships";
         public static final String categoriesOfRoom = "/categories/{roomId}";
+        public static final String categoriesOfStand = "/categories/stand/{standId}";
+        public static final String deleteCategoryFromRoom = "/categories/{categoryId}/rooms/{roomId}";
+        public static final String deletePlatformSubscriber = "/platforms/{platformId}/subscribers";
+        public static final String addCategoryToRoom = "/categories/rooms";
         public static final String stands = "/stands";
         public static final String standsProducts = "/stands/{id}/products";
     }

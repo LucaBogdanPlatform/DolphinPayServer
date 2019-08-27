@@ -12,6 +12,7 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 public class ProductsTypesCategories {
     @Id

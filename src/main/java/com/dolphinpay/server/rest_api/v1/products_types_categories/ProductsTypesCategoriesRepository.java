@@ -16,4 +16,15 @@ interface ProductsTypesCategoriesRepository extends JpaRepository<ProductsTypesC
     )
     ProductsTypesCategories[] getCategoriesOfRoom(Integer roomId);
 
+    @Query(
+            value = "SELECT * " +
+                    "FROM products_types_categories ptc " +
+                    "WHERE ptc.z_id IN ( " +
+                    "SELECT pt.z_category " +
+                    "FROM products_types pt " +
+                    "INNER JOIN products p ON pt.z_id = p.z_type " +
+                    "WHERE p.z_stand = :standId) ",
+            nativeQuery = true
+    )
+    ProductsTypesCategories[] getCategoriesOfStand(Integer standId);
 }
