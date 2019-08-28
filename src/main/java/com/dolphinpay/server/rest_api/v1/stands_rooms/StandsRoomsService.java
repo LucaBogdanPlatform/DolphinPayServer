@@ -1,6 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.stands_rooms;
 
-import com.dolphinpay.server.rest_api.v1.products_types_categories.ProductsTypesCategories;
+import com.dolphinpay.server.rest_api.v1.stands.Stands;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,14 @@ public class StandsRoomsService {
 
     public Optional<StandsRooms> findById(Integer id) {
         return standsRoomsRepository.findById(id);
+    }
+
+    public Optional<StandsRooms> findByStandAndName(Stands stand, String name) {
+        return standsRoomsRepository.findByStandAndName(stand, name);
+    }
+
+    public StandsRooms[] findByStand(Stands stand) {
+        return standsRoomsRepository.findByStand(stand);
     }
 
     public StandsRooms save(StandsRooms user) {

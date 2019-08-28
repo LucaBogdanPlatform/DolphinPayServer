@@ -29,7 +29,7 @@ public class Stands {
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
 
-    public JSONStands getResponse() {
+    public JSONStands getHttpResponseStandard() {
         return JSONStands.builder().id(this.id).build();
     }
 

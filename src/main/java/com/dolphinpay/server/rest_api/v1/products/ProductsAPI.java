@@ -78,7 +78,7 @@ public class ProductsAPI {
 //
 //            JSONPagingList.JSONPagingListBuilder<Stands.JSONStands> response = JSONPagingList.builder();
 //            response.total(standsService.count());
-//            response.list(page.stream().map(Stands::getResponse).toArray(Stands.JSONStands[]::new));
+//            response.list(page.stream().map(Stands::getHttpResponseStandard).toArray(Stands.JSONStands[]::new));
 //            response.links(links.build());
             return ResponseEntity.ok(null);
         });

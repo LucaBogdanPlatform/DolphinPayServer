@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.stands_rooms;
 
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONStandRoom;
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +22,9 @@ public class StandsRooms {
     @Column(name = "z_id", insertable = false)
     private int id;
 
+    @Column(name = "z_name")
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "z_stand")
     private Stands stand;
@@ -34,4 +38,13 @@ public class StandsRooms {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+    public JSONStandRoom getHttpResponseStandard() {
+        JSONStandRoom.JSONStandRoomBuilder response = JSONStandRoom.builder();
+        response.id(this.id);
+        response.name(this.name);
+        response.stand(stand.getHttpResponseStandard());
+        return response.build();
+    }
+
 }

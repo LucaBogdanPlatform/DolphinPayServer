@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.platforms_partenerships;
 
+import com.dolphinpay.server.rest_api.v1.stands.Stands;
 import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,10 @@ public class PlatformPartnershipsService {
 
     public Optional<PlatformPartnerships> findById(Integer id) {
         return platformPartnershipsRepository.findById(id);
+    }
+
+    public Optional<PlatformPartnerships> findByStandAndUser(Stands stand, User user) {
+        return platformPartnershipsRepository.findByStandAndUser(stand, user);
     }
 
     public PlatformPartnerships save(PlatformPartnerships platformPartnerships) {
