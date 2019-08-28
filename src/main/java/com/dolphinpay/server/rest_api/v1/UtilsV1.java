@@ -20,5 +20,6 @@ public class UtilsV1 {
         public static final String standsRooms = "/stands/{id}/rooms";
         public static final String stands = "/stands";
         public static final String standsProducts = "/stands/{id}/products";
+        public static final String roomSubscriptionCode = "/rooms/{id}/subscriptionCode";
     }
 }
