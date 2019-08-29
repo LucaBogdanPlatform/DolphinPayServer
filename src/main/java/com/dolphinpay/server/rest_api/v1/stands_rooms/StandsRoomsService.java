@@ -34,6 +34,11 @@ public class StandsRoomsService {
         return standsRoomsRepository.save(user);
     }
 
+    public Optional<StandsRooms> findBySubscriptionCode(String subscriptionCode){
+        return standsRoomsRepository.findBySubscriptionCode(subscriptionCode);
+
+    }
+
     public void deleteById(Integer id) {
         standsRoomsRepository.deleteById(id);
     }

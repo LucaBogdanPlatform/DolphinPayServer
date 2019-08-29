@@ -5,13 +5,11 @@ import com.dolphinpay.server.rest_api.v1.platforms_permissions.PlatformsPermissi
 import com.dolphinpay.server.rest_api.v1.platforms_roles.PlatformsRoles;
 import com.dolphinpay.server.rest_api.v1.stands_rooms.StandsRooms;
 import com.dolphinpay.server.rest_api.v1.users.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -22,9 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class PlatformSubscribers {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "z_id")
     private int id;
 

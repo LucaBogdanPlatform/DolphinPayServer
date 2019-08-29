@@ -1,6 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.stands_rooms;
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONLink;
 import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONStandRoom;
 import com.dolphinpay.server.rest_api.v1.platforms_partenerships.PlatformPartnerships;
 import com.dolphinpay.server.rest_api.v1.platforms_partenerships.PlatformPartnershipsService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuthAndUser;
 
@@ -76,8 +78,12 @@ public class StandsRoomsAPI {
             }
 
             return ResponseEntity.ok(
-                    service.save(StandsRooms.builder().name(data.getName()).stand(stand.get()).build())
-                            .getHttpResponseStandard()
+                    service.save(StandsRooms.builder()
+                            .name(data.getName())
+                            .stand(stand.get())
+                            .subscriptionCode(UUID.randomUUID().toString())
+                            .build()
+                    ).getHttpResponseStandard()
             );
         });
     }
@@ -112,6 +118,35 @@ public class StandsRoomsAPI {
             }
 
             return ResponseEntity.ok(response);
+        });
+    }
+
+    @GetMapping(UtilsV1.URLS.roomSubscriptionCode)
+    @ApiOperation(
+            value = "Return the url of the QR-Code built with subscribed code"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity getSubscriptionCode(
+            @RequestParam String token,
+            @PathVariable("id") Integer roomId) {
+        return checkAuthAndUser(userService, token, (user) -> {
+
+            Optional<StandsRooms> room = service.findById(roomId);
+
+            if (!room.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+
+            room.get().setSubscriptionCode(
+                    UUID.fromString(room.get().getId() + UUID.randomUUID().toString()).toString()
+            );
+
+            return ResponseEntity.ok(JSONLink.builder().url(service.save(room.get()).getSubscriptionCode()).build());
         });
     }
 }

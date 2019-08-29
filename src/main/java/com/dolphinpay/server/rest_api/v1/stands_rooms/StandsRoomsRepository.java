@@ -9,4 +9,6 @@ interface StandsRoomsRepository extends JpaRepository<StandsRooms, Integer> {
     Optional<StandsRooms> findByStandAndName(Stands stand, String name);
 
     StandsRooms[] findByStand(Stands stand);
+
+    Optional<StandsRooms> findBySubscriptionCode(String subscriptionCode);
 }

@@ -25,6 +25,9 @@ public class StandsRooms {
     @Column(name = "z_name")
     private String name;
 
+    @Column(name = "z_valid_subscription_code")
+    private String subscriptionCode;
+
     @ManyToOne
     @JoinColumn(name = "z_stand")
     private Stands stand;
@@ -43,7 +46,7 @@ public class StandsRooms {
         JSONStandRoom.JSONStandRoomBuilder response = JSONStandRoom.builder();
         response.id(this.id);
         response.name(this.name);
-        response.stand(stand.getHttpResponseStandard());
+        response.stand(this.stand.getHttpResponseStandard());
         return response.build();
     }
 

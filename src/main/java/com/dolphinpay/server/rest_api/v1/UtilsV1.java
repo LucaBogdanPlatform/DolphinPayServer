@@ -17,6 +17,7 @@ public class UtilsV1 {
         public static final String deletePlatformSubscriber = "/platforms/{platformId}/subscribers";
         public static final String addCategoryToRoom = "/categories/rooms";
         public static final String createRoomForStand = "/stands/rooms";
+        public static final String createSubscriptionPlatform = "/platforms/subscriptions";
         public static final String standsRooms = "/stands/{id}/rooms";
         public static final String stands = "/stands";
         public static final String standsProducts = "/stands/{id}/products";
