@@ -23,6 +23,19 @@ import java.util.Date;
 @Data
 @IdClass(OrdersProductsIds.class)
 public class OrdersProducts {
+    public enum StatesIds{
+        STATE_NEW(1),
+        STATE_PREPARE(2),
+        STATE_READY(3),
+        STATE_CLOSED(4);
+
+        private final int state;
+        StatesIds(int i) {
+            this.state = i;
+        }
+    }
+
+
     @Id
     @ManyToOne
     @JoinColumn(name = "z_order")
