@@ -92,7 +92,7 @@ public class ProductsTypesCategoriesAPI {
     }
 
 
-    @GetMapping(UtilsV1.URLS.productsOfCategory)
+    @GetMapping(UtilsV1.URLS.productsOfCategoryOfStand)
     @ApiOperation(
             value = "Get all products of a specific category",
             response = Products.JSONProducts.class
