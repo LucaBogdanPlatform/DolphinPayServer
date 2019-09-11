@@ -25,5 +25,6 @@ public class UtilsV1 {
         public static final String roomOrders = "/room/{id}/orders";
         public static final String ordersProducts = "/ordersProducts/{id}";
         public static final String ordersProductsState = "/ordersProducts/{id}/states";
+        public static final String productsOfCategory = "stand/{standId}/categories/{id}/products";
     }
 }

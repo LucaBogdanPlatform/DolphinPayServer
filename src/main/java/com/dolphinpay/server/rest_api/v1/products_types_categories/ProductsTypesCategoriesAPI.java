@@ -1,6 +1,8 @@
 package com.dolphinpay.server.rest_api.v1.products_types_categories;
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
+import com.dolphinpay.server.rest_api.v1.products.Products;
+import com.dolphinpay.server.rest_api.v1.products.ProductsService;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -26,6 +28,9 @@ public class ProductsTypesCategoriesAPI {
 
     @NonNull
     private ProductsTypesCategoriesService service;
+
+    @NonNull
+    private ProductsService productsService;
 
     @NonNull
     private UserService userService;
@@ -83,6 +88,35 @@ public class ProductsTypesCategoriesAPI {
             }
 
             return ResponseEntity.ok(productsTypesCategories);
+        });
+    }
+
+
+    @GetMapping(UtilsV1.URLS.productsOfCategory)
+    @ApiOperation(
+            value = "Get all products of a specific category",
+            response = Products.JSONProducts.class
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity getAllProductsOfCategory(
+            @RequestParam String token,
+            @PathVariable Integer standId,
+            @PathVariable Integer id) {
+        return checkAuthAndUser(userService, token, (user) -> {
+            ArrayList<Products.JSONProducts> r = new ArrayList<>();
+
+
+            Products[] result = productsService.getAllProductsOfCategoryOfStand(standId, id);
+            for (Products p : result) {
+                r.add(p.getResponse());
+            }
+
+            return ResponseEntity.ok(r);
         });
     }
 }

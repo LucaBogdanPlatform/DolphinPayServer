@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class GoogleUtils {
-    private static final String WEB_CLIENT_ID = "806071370102-hrqrkdqkhkgdrci01qi4ovaml2hki4jv.apps.googleusercontent.com";
+    private static final String WEB_CLIENT_ID = "806071370102-h2i7k86tb9shfgkqbibgg451svi9o3o6.apps.googleusercontent.com";
     private static final String G_ISSUER_ANDROID_OLDER = "accounts.google.com";
     private static final String G_ISSUER_ANDROID_NEW = "https://accounts.google.com";
 

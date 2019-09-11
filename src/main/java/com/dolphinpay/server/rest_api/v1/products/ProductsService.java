@@ -36,4 +36,8 @@ public class ProductsService {
     public void deleteById(Integer id) {
         productsRepository.deleteById(id);
     }
+
+    public Products[] getAllProductsOfCategoryOfStand(Integer standId, Integer id) {
+        return productsRepository.getAllProductsOfCategoryOfStand(standId, id);
+    }
 }
