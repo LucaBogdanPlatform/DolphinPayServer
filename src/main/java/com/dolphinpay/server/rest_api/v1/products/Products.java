@@ -1,6 +1,5 @@
 package com.dolphinpay.server.rest_api.v1.products;
 
-import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONProductsFilter;
 import com.dolphinpay.server.rest_api.v1.products_brands.ProductsBrands;
 import com.dolphinpay.server.rest_api.v1.products_types.ProductsTypes;
 import com.dolphinpay.server.rest_api.v1.stands.Stands;
@@ -38,6 +37,9 @@ public class Products {
     @Column(name = "z_name")
     private String name;
 
+    @Column(name = "z_price_euro")
+    private Double price;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_creation_time")
@@ -54,6 +56,8 @@ public class Products {
                 .id(this.id)
                 .type(this.type.getResponse())
                 .brand(this.brand.getResponse())
+                .name(this.name)
+                .price(this.price)
                 .build();
     }
 
@@ -65,11 +69,13 @@ public class Products {
         private int id;
         private ProductsTypes.JSONProductsTypes type;
         private ProductsBrands.JSONProductsBrands brand;
+        private Double price;
+        private String name;
     }
 
     @Data
     @Builder
-    public static class Filter{
+    public static class Filter {
         private Integer stand;
         private String name;
         private Integer category;

@@ -32,4 +32,9 @@ public class UsersDevicesService {
     public UsersDevices findByUserId(int userId) {
         return usersDevicesRepository.findByUserId(userId);
     }
+
+    public UsersDevices[] findAllObservingWithPartnershipObservingCategory (Integer standId, Integer categoryId){
+        return usersDevicesRepository.findAllObservingWithPartnershipObservingCategory(standId, categoryId);
+
+    }
 }

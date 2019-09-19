@@ -1,9 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.orders;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,19 +22,19 @@ public class Orders {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "z_state")
-    private Orders state;
+    @JoinColumn(name = "z_state", insertable = false)
+    private OrdersStates state;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_expected_end_prepare")
     private Date expectedEndTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "z_closure_time")
+    @Column(name = "z_closure_time", insertable = false)
     private Date officialClosureTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "z_sum_optional_time")
+    @Column(name = "z_sum_optional_time", insertable = false)
     private Date sumOptionalTime;
 
     @CreationTimestamp

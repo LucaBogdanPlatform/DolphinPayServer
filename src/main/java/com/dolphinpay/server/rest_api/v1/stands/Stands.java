@@ -19,6 +19,9 @@ public class Stands {
     @Column(name = "z_id", insertable = false)
     private int id;
 
+    @Column(name = "z_name")
+    private String name;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_creation_time")
@@ -30,7 +33,7 @@ public class Stands {
     private Date lastUpdateTime;
 
     public JSONStands getHttpResponseStandard() {
-        return JSONStands.builder().id(this.id).build();
+        return JSONStands.builder().id(this.id).name(this.name).build();
     }
 
     @Data
@@ -39,5 +42,6 @@ public class Stands {
     @AllArgsConstructor
     public static class JSONStands {
         private int id;
+        private String name;
     }
 }
