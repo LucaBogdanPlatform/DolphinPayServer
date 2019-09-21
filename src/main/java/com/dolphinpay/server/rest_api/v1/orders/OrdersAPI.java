@@ -63,12 +63,15 @@ public class OrdersAPI {
             @PathVariable("id") Integer standId,
             @RequestBody JSONNewOrder newOrder) {
         return checkAuthAndUser(userService, token, (user) -> {
-            // TODO calcolo tempo attesa
-            Date endPrepareTime = new Date(new Date().getTime() + 60000 * 10); // TODO
+
+            int pendingOrder = service.countStandOpenOrders(standId);
+            int minutesToWait = (pendingOrder * 30) / 100;
+
+            Date endPrepareTime = new Date(new Date().getTime() + 60000 * minutesToWait);
             Date startPrepareTime = new Date();
 
 
-            Orders order = service.save(Orders.builder().expectedEndTime(endPrepareTime).build());
+            Orders order = service.save(Orders.builder().user(user).expectedEndTime(endPrepareTime).build());
 
             for (JSONNewOrder.JSONPair p : newOrder.getProducts()) {
                 Optional<Products> pr = productsService.findById(p.getProductId());

@@ -32,4 +32,5 @@ public class OrdersProductsService {
     public OrdersProducts[] findByRoomIdNotClosed(Integer roomId) {
         return ordersProductsRepository.findByRoomIdNotClosed(roomId);
     }
+
 }

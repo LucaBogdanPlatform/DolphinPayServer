@@ -29,4 +29,8 @@ public class OrdersService {
         ordersRepository.deleteById(id);
     }
 
+    public int countStandOpenOrders(Integer standId){
+        return ordersRepository.countStandOpenOrders(standId);
+
+    }
 }

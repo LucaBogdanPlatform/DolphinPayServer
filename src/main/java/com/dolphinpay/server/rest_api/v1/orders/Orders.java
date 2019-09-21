@@ -1,6 +1,7 @@
 package com.dolphinpay.server.rest_api.v1.orders;
 
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
+import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,6 +25,10 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "z_state", insertable = false)
     private OrdersStates state;
+
+    @ManyToOne
+    @JoinColumn(name = "z_state")
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_expected_end_prepare")
