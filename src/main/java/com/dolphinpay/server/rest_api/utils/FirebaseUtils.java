@@ -27,6 +27,16 @@ public class FirebaseUtils {
     private static final String FIREBASE_ADMIN_SDK_RESOURCE_PATH = "/WEB-INF/firebase-admin-sdk.json";
     private static final String FIREBASE_ADMIN_CONFIG_URL = "https://dolphinpay-d90e4.firebaseio.com";
 
+    private enum PushNotificationsCode {
+        NEW_PRODUCT_ORDER("0"),
+        CLOSED_PRODUCT_ORDER("1"),
+        READY_ORDER("2");
+        private final String value;
+
+        PushNotificationsCode(String i) {
+            this.value = i;
+        }
+    }
 
     public static void init(@NonNull ServletContext servletContext) {
         try {
@@ -50,6 +60,7 @@ public class FirebaseUtils {
             @NonNull Products products)
             throws ExecutionException, InterruptedException, JsonProcessingException {
         Map<String, String> m = ordersProducts.toMap(products.getResponse());
+        m.put("p_code", PushNotificationsCode.NEW_PRODUCT_ORDER.value);
 
         for (UsersDevices u : usersDevices) {
             Message message = Message
