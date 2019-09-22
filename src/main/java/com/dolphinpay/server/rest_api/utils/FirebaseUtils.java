@@ -1,11 +1,15 @@
 package com.dolphinpay.server.rest_api.utils;
 
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProducts;
+import com.dolphinpay.server.rest_api.v1.products.Products;
 import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevices;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.*;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import javafx.application.Application;
 import lombok.NonNull;
 
@@ -13,7 +17,7 @@ import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
-import java.time.Duration;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,22 +44,20 @@ public class FirebaseUtils {
         }
     }
 
-    public static void sendOrdersProducts(@NonNull UsersDevices[] usersDevices, @NonNull OrdersProducts ordersProducts) throws ExecutionException, InterruptedException {
+    public static void sendOrdersProducts(
+            @NonNull UsersDevices[] usersDevices,
+            @NonNull OrdersProducts ordersProducts,
+            @NonNull Products products)
+            throws ExecutionException, InterruptedException, JsonProcessingException {
+        Map<String, String> m = ordersProducts.toMap(products.getResponse());
+
         for (UsersDevices u : usersDevices) {
-            AndroidConfig androidConfig = AndroidConfig.builder()
-                    .setTtl(Duration.ofMinutes(2).toMillis()).setCollapseKey("chuck")
-                    .setPriority(AndroidConfig.Priority.HIGH)
-                    .setNotification(AndroidNotification.builder().setTag("chuck").build()).build();
-
-            ApnsConfig apnsConfig = ApnsConfig.builder()
-                    .setAps(Aps.builder().setCategory("chuck").setThreadId("chuck").build()).build();
-
-
-            Message message = Message.builder().putAllData(ordersProducts.toMap()).setToken(u.getFirebaseToken())
-                    .setApnsConfig(apnsConfig).setAndroidConfig(androidConfig)
-                    .setNotification(
-                            new Notification("Chuck Norris Joke", "A new Chuck Norris joke has arrived"))
-                    .build();
+            Message message = Message
+                    .builder()
+                    .putAllData(m).setToken(u.getFirebaseToken())
+                    .setNotification(new Notification(
+                            "New order", "New order still available on your account"
+                    )).build();
 
             String response = FirebaseMessaging.getInstance().sendAsync(message).get();
 

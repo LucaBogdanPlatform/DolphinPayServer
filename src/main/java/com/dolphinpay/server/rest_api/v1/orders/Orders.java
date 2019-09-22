@@ -27,7 +27,7 @@ public class Orders {
     private OrdersStates state;
 
     @ManyToOne
-    @JoinColumn(name = "z_state")
+    @JoinColumn(name = "z_user")
     private User user;
 
     @Temporal(TemporalType.TIMESTAMP)

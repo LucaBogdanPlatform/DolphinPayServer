@@ -20,7 +20,7 @@ public class OrdersStates {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "z_id", insertable = false)
-    private int id;
+    private Integer id;
 
     @Column(name = "z_name", insertable = false)
     private String name;

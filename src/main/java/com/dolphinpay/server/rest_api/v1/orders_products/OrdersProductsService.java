@@ -17,7 +17,7 @@ public class OrdersProductsService {
         return ordersProductsRepository.findAll();
     }
 
-    public Optional<OrdersProducts> findById(Integer id) {
+    public Optional<OrdersProducts> findById(OrdersProductsIds id) {
         return ordersProductsRepository.findById(id);
     }
 
@@ -25,7 +25,7 @@ public class OrdersProductsService {
         return ordersProductsRepository.save(user);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteById(OrdersProductsIds id) {
         ordersProductsRepository.deleteById(id);
     }
 

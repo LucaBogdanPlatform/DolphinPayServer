@@ -55,58 +55,58 @@ public class OrdersProductsAPI {
     }
 
 
-    @GetMapping(UtilsV1.URLS.ordersProducts)
-    @ApiOperation(
-            value = "Get specific order product"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
-                    @ApiResponse(code = 401, message = "Token elapsed time")
-            }
-    )
-    public ResponseEntity getSpecificOrderProduct(
-            @RequestParam String token,
-            @PathVariable("id") Integer ordersProductsId) {
-        return checkAuthAndUser(userService, token, (user) -> ResponseEntity.ok(service.findById(ordersProductsId)));
-    }
+//    @GetMapping(UtilsV1.URLS.ordersProducts)
+//    @ApiOperation(
+//            value = "Get specific order product"
+//    )
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+//                    @ApiResponse(code = 401, message = "Token elapsed time")
+//            }
+//    )
+//    public ResponseEntity getSpecificOrderProduct(
+//            @RequestParam String token,
+//            @PathVariable("id") Integer ordersProductsId) {
+//        return checkAuthAndUser(userService, token, (user) -> ResponseEntity.ok(service.findById(ordersProductsId)));
+//    }
 
-
-    @Transactional
-    @PostMapping(UtilsV1.URLS.ordersProductsState)
-    @ApiOperation(
-            value = "Change orders products state and notify"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
-                    @ApiResponse(code = 401, message = "Token elapsed time")
-            }
-    )
-    public ResponseEntity changeOrdersProductsState(
-            @RequestParam String token,
-            @PathVariable("id") Integer ordersProductsId,
-            @RequestBody Integer stateId) {
-        return checkAuthAndUser(userService, token, (user) -> {
-            Optional<OrdersProducts> op = service.findById(ordersProductsId);
-
-            if (!op.isPresent()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-
-            Optional<OrdersStates> ordersStates = ordersStatesService.findById(stateId);
-
-            if (!ordersStates.isPresent()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-
-            op.get().setState(ordersStates.get());
-            service.save(op.get());
-            notifyStateChanged(op.get());
-
-            return ResponseEntity.ok(op.get());
-        });
-    }
+//
+//    @Transactional
+//    @PostMapping(UtilsV1.URLS.ordersProductsState)
+//    @ApiOperation(
+//            value = "Change orders products state and notify"
+//    )
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+//                    @ApiResponse(code = 401, message = "Token elapsed time")
+//            }
+//    )
+//    public ResponseEntity changeOrdersProductsState(
+//            @RequestParam String token,
+//            @PathVariable("id") Integer ordersProductsId,
+//            @RequestBody Integer stateId) {
+//        return checkAuthAndUser(userService, token, (user) -> {
+//            Optional<OrdersProducts> op = service.findById(ordersProductsId);
+//
+//            if (!op.isPresent()) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
+//
+//            Optional<OrdersStates> ordersStates = ordersStatesService.findById(stateId);
+//
+//            if (!ordersStates.isPresent()) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
+//
+//            op.get().setState(ordersStates.get());
+//            service.save(op.get());
+//            notifyStateChanged(op.get());
+//
+//            return ResponseEntity.ok(op.get());
+//        });
+//    }
 
 
     private void notifyStateChanged(OrdersProducts ordersProducts) {

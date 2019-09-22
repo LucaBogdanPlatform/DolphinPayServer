@@ -1,15 +1,20 @@
 package com.dolphinpay.server.rest_api.v1.orders_products;
 
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
+import com.dolphinpay.server.rest_api.v1.products.Products;
+import com.dolphinpay.server.rest_api.v1.products_brands.ProductsBrands;
+import com.dolphinpay.server.rest_api.v1.products_types.ProductsTypes;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "orders_products")
@@ -19,7 +24,6 @@ import java.util.Set;
 @Data
 @Builder
 public class OrdersProducts {
-
     public enum StatesIds {
         STATE_NEW(1),
         STATE_PREPARE(2),
@@ -70,67 +74,36 @@ public class OrdersProducts {
     private Date lastUpdateTime;
 
 
-    public Map<String, String> toMap() {
-        return new Map<String, String>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean containsKey(Object key) {
-                return false;
-            }
-
-            @Override
-            public boolean containsValue(Object value) {
-                return false;
-            }
-
-            @Override
-            public String get(Object key) {
-                return null;
-            }
-
-            @Override
-            public String put(String key, String value) {
-                return null;
-            }
-
-            @Override
-            public String remove(Object key) {
-                return null;
-            }
-
-            @Override
-            public void putAll(Map<? extends String, ? extends String> m) {
-
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public Set<String> keySet() {
-                return null;
-            }
-
-            @Override
-            public Collection<String> values() {
-                return null;
-            }
-
-            @Override
-            public Set<Entry<String, String>> entrySet() {
-                return null;
-            }
-        };
+    public Map<String, String> toMap(Products.JSONProducts products) throws JsonProcessingException {
+        Map<String, String> map = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        String order = mapper.writeValueAsString(getResponse(products));
+        map.put("order", order);
+        return map;
     }
-}
+
+    private JSONOrder getResponse(Products.JSONProducts products){
+        return JSONOrder.builder()
+                .id(this.ids.getOrder())
+                .quantity(this.quantity)
+                .products(products)
+                .expectedStartTime(this.expectedStartTime)
+                .expectedEndTime(this.expectedEndTime)
+                .officialClosureTime(this.officialClosureTime)
+                .sumOptionalTime(this.sumOptionalTime)
+                .build();
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class JSONOrder {
+        private int id;
+        private Products.JSONProducts products;
+        private int quantity;
+        private Date expectedStartTime;
+        private Date expectedEndTime;
+        private Date officialClosureTime;
+        private Date sumOptionalTime;
+    }}

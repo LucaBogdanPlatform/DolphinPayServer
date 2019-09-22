@@ -65,10 +65,10 @@ public class OrdersAPI {
         return checkAuthAndUser(userService, token, (user) -> {
 
             int pendingOrder = service.countStandOpenOrders(standId);
-            int minutesToWait = (pendingOrder * 30) / 100;
+            double minutesToWait = (pendingOrder * 30.) / 100.;
 
-            Date endPrepareTime = new Date(new Date().getTime() + 60000 * minutesToWait);
             Date startPrepareTime = new Date();
+            Date endPrepareTime = new Date((long) (startPrepareTime.getTime() + 60000 * minutesToWait));
 
 
             Orders order = service.save(Orders.builder().user(user).expectedEndTime(endPrepareTime).build());
@@ -91,15 +91,15 @@ public class OrdersAPI {
                         usersDevicesService.findAllObservingWithPartnershipObservingCategory(
                                 standId, pr.get().getType().getCategory().getId()
                         );
-
                 try {
-                    FirebaseUtils.sendOrdersProducts(devicesToSendOrderProduct, ordersProducts);
+                    FirebaseUtils.sendOrdersProducts(devicesToSendOrderProduct, ordersProducts, pr.get());
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                 }
             }
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(order);
         });
     }
 
