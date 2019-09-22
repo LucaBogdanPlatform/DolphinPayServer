@@ -3,6 +3,7 @@ package com.dolphinpay.server.rest_api.v1.orders;
 import com.dolphinpay.server.rest_api.utils.FirebaseUtils;
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
 import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONNewOrder;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONOrders;
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProducts;
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProductsIds;
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProductsService;
@@ -104,5 +105,39 @@ public class OrdersAPI {
         });
     }
 
+    @Transactional
+    @GetMapping(UtilsV1.URLS.userOrders)
+    @ApiOperation(
+            value = "Get all user orders"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity getOrders(@RequestParam String token) {
+        return checkAuthAndUser(userService, token, (user) -> {
+            JSONOrders orders = new JSONOrders();
+
+            OrdersProducts[] ops = ordersProductsService.findAllUserOpenOrders(user.getId());
+
+            for (OrdersProducts op : ops) {
+                orders.getOrdersProducts().add(OrdersProducts.JSONOrderProduct
+                        .builder()
+                        .id(op.getIds().getOrder())
+                        .expectedEndTime(op.getExpectedEndTime())
+                        .expectedStartTime(op.getExpectedStartTime())
+                        .officialClosureTime(op.getOfficialClosureTime())
+                        .quantity(op.getQuantity())
+                        .state(op.getState())
+                        .sumOptionalTime(op.getSumOptionalTime())
+                        .products(productsService.findById(op.getIds().getProduct()).get().getResponse())
+                        .build()
+                );
+            }
+            return ResponseEntity.ok(orders);
+        });
+    }
 
 }

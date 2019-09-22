@@ -79,11 +79,12 @@ public class OrdersProducts {
         return map;
     }
 
-    public JSONOrder getResponse(Products.JSONProducts products) {
-        return JSONOrder.builder()
+    public JSONOrderProduct getResponse(Products.JSONProducts products) {
+        return JSONOrderProduct.builder()
                 .id(this.ids.getOrder())
                 .quantity(this.quantity)
                 .products(products)
+                .state(this.state)
                 .expectedStartTime(this.expectedStartTime)
                 .expectedEndTime(this.expectedEndTime)
                 .officialClosureTime(this.officialClosureTime)
@@ -95,9 +96,10 @@ public class OrdersProducts {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class JSONOrder {
-        private int id;
+    public static class JSONOrderProduct {
+        private int id; // This is the order ID
         private Products.JSONProducts products;
+        private OrdersStates state;
         private int quantity;
         private Date expectedStartTime;
         private Date expectedEndTime;

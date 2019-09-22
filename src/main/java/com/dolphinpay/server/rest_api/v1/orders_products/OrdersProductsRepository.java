@@ -18,4 +18,13 @@ interface OrdersProductsRepository extends JpaRepository<OrdersProducts, OrdersP
             nativeQuery = true
     )
     OrdersProducts[] findByRoomIdNotClosed(Integer roomId);
+
+    @Query(
+            value = "SELECT op.* " +
+                    "FROM orders_products op " +
+                    "INNER JOIN orders o ON o.z_id = op.z_order " +
+                    "WHERE o.z_user = :userId AND NOT o.z_state = 4",
+            nativeQuery = true
+    )
+    OrdersProducts[] findAllUserOpenOrders(Integer userId);
 }

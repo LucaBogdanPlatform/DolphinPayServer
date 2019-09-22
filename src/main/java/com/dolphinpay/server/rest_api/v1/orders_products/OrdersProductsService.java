@@ -33,4 +33,7 @@ public class OrdersProductsService {
         return ordersProductsRepository.findByRoomIdNotClosed(roomId);
     }
 
+    public OrdersProducts[] findAllUserOpenOrders(Integer userId){
+        return ordersProductsRepository.findAllUserOpenOrders(userId);
+    }
 }

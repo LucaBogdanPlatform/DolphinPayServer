@@ -107,7 +107,6 @@ public class OrdersProductsAPI {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
 
-            op.get().setState(ordersStates.get());
             op.get().setOfficialClosureTime(new Date(closureTime.getClosureTime()));
             service.save(op.get());
 
@@ -120,8 +119,6 @@ public class OrdersProductsAPI {
                 }
 
                 ord.get().setOfficialClosureTime(op.get().getOfficialClosureTime());
-                ord.get().setState(op.get().getState());
-
                 ordersService.save(ord.get());
                 // TODO user of end ordination
             }
