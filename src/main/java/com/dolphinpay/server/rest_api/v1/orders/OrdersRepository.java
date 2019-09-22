@@ -14,4 +14,12 @@ interface OrdersRepository extends JpaRepository<Orders, Integer> {
             nativeQuery = true
     )
     int countStandOpenOrders(Integer standId);
+
+    @Query(
+            value = "SELECT count(*) " +
+                    "FROM orders_products op " +
+                    "WHERE op.z_order = :orderId AND z_closure_time IS NULL",
+            nativeQuery = true
+    )
+    int countProductsToPrepareOfOrder(Integer orderId);
 }

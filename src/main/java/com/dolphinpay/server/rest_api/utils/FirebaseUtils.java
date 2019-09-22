@@ -54,7 +54,8 @@ public class FirebaseUtils {
         for (UsersDevices u : usersDevices) {
             Message message = Message
                     .builder()
-                    .putAllData(m).setToken(u.getFirebaseToken())
+                    .putAllData(m)
+                    .setToken(u.getFirebaseToken())
                     .setNotification(new Notification(
                             "New order", "New order still available on your account"
                     )).build();

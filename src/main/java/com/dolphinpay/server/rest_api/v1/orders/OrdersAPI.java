@@ -11,6 +11,7 @@ import com.dolphinpay.server.rest_api.v1.products.ProductsService;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
 import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevices;
 import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevicesService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuthAndUser;
 
@@ -93,9 +95,8 @@ public class OrdersAPI {
                         );
                 try {
                     FirebaseUtils.sendOrdersProducts(devicesToSendOrderProduct, ordersProducts, pr.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                } catch (JsonProcessingException | InterruptedException | ExecutionException e) {
+                    e.printStackTrace(); // TODO HANDLE IT
                 }
             }
 

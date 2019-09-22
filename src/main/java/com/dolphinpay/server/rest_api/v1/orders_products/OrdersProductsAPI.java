@@ -1,6 +1,9 @@
 package com.dolphinpay.server.rest_api.v1.orders_products;
 
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONTimestamp;
+import com.dolphinpay.server.rest_api.v1.orders.Orders;
+import com.dolphinpay.server.rest_api.v1.orders.OrdersService;
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStatesService;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuthAndUser;
@@ -30,6 +34,8 @@ public class OrdersProductsAPI {
 
     @NonNull
     private OrdersProductsService service;
+    @NonNull
+    private OrdersService ordersService;
     @NonNull
     private UserService userService;
     @NonNull
@@ -71,47 +77,57 @@ public class OrdersProductsAPI {
 //        return checkAuthAndUser(userService, token, (user) -> ResponseEntity.ok(service.findById(ordersProductsId)));
 //    }
 
-//
-//    @Transactional
-//    @PostMapping(UtilsV1.URLS.ordersProductsState)
-//    @ApiOperation(
-//            value = "Change orders products state and notify"
-//    )
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
-//                    @ApiResponse(code = 401, message = "Token elapsed time")
-//            }
-//    )
-//    public ResponseEntity changeOrdersProductsState(
-//            @RequestParam String token,
-//            @PathVariable("id") Integer ordersProductsId,
-//            @RequestBody Integer stateId) {
-//        return checkAuthAndUser(userService, token, (user) -> {
-//            Optional<OrdersProducts> op = service.findById(ordersProductsId);
-//
-//            if (!op.isPresent()) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//            }
-//
-//            Optional<OrdersStates> ordersStates = ordersStatesService.findById(stateId);
-//
-//            if (!ordersStates.isPresent()) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//            }
-//
-//            op.get().setState(ordersStates.get());
-//            service.save(op.get());
-//            notifyStateChanged(op.get());
-//
-//            return ResponseEntity.ok(op.get());
-//        });
-//    }
 
+    @Transactional
+    @PostMapping(UtilsV1.URLS.ordersProductsStateReady)
+    @ApiOperation(
+            value = "Change orders products state to ready and notify"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity closeOrderProduct(
+            @RequestParam String token,
+            @PathVariable("orderId") Integer orderId,
+            @PathVariable("productId") Integer productId,
+            @RequestBody JSONTimestamp closureTime) {
+        return checkAuthAndUser(userService, token, (user) -> {
+            Optional<OrdersProducts> op = service.findById(new OrdersProductsIds(orderId, productId));
 
-    private void notifyStateChanged(OrdersProducts ordersProducts) {
-        // TODO
+            if (!op.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
 
+            Optional<OrdersStates> ordersStates = ordersStatesService.findById(OrdersProducts.StatesIds.STATE_READY.state);
+
+            if (!ordersStates.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+
+            op.get().setState(ordersStates.get());
+            op.get().setOfficialClosureTime(new Date(closureTime.getClosureTime()));
+            service.save(op.get());
+
+            int countProductsOpenOfOrder = ordersService.countProductsToPrepareOfOrder(orderId);
+
+            if (countProductsOpenOfOrder == 0) {
+                Optional<Orders> ord = ordersService.findById(orderId);
+                if (!ord.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+
+                ord.get().setOfficialClosureTime(op.get().getOfficialClosureTime());
+                ord.get().setState(op.get().getState());
+
+                ordersService.save(ord.get());
+                // TODO user of end ordination
+            }
+
+            return ResponseEntity.ok(op.get());
+        });
     }
 
 }

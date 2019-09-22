@@ -31,6 +31,9 @@ public class OrdersService {
 
     public int countStandOpenOrders(Integer standId){
         return ordersRepository.countStandOpenOrders(standId);
+    }
 
+    public int countProductsToPrepareOfOrder(Integer orderId){
+        return ordersRepository.countProductsToPrepareOfOrder(orderId);
     }
 }

@@ -2,14 +2,11 @@ package com.dolphinpay.server.rest_api.v1.orders_products;
 
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
 import com.dolphinpay.server.rest_api.v1.products.Products;
-import com.dolphinpay.server.rest_api.v1.products_brands.ProductsBrands;
-import com.dolphinpay.server.rest_api.v1.products_types.ProductsTypes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -30,7 +27,7 @@ public class OrdersProducts {
         STATE_READY(3),
         STATE_CLOSED(4);
 
-        private final int state;
+        public final int state;
 
         StatesIds(int i) {
             this.state = i;
@@ -82,7 +79,7 @@ public class OrdersProducts {
         return map;
     }
 
-    private JSONOrder getResponse(Products.JSONProducts products){
+    public JSONOrder getResponse(Products.JSONProducts products) {
         return JSONOrder.builder()
                 .id(this.ids.getOrder())
                 .quantity(this.quantity)
@@ -106,4 +103,5 @@ public class OrdersProducts {
         private Date expectedEndTime;
         private Date officialClosureTime;
         private Date sumOptionalTime;
-    }}
+    }
+}
