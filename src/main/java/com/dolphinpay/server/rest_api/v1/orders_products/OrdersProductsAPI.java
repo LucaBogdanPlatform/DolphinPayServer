@@ -7,7 +7,10 @@ import com.dolphinpay.server.rest_api.v1.orders.Orders;
 import com.dolphinpay.server.rest_api.v1.orders.OrdersService;
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStatesService;
+import com.dolphinpay.server.rest_api.v1.products.Products;
+import com.dolphinpay.server.rest_api.v1.products.ProductsService;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
+import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevices;
 import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevicesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +43,8 @@ public class OrdersProductsAPI {
     private OrdersProductsService service;
     @NonNull
     private OrdersService ordersService;
+    @NonNull
+    private ProductsService productsService;
     @NonNull
     private UserService userService;
     @NonNull
@@ -137,6 +142,18 @@ public class OrdersProductsAPI {
                 }
             }
 
+            Optional<Products> p = productsService.findById(op.get().getIds().getProduct());
+            UsersDevices[] devicesToSendOrderProduct =
+                    usersDevicesService.findAllObservingWithPartnershipObservingCategory(
+                            p.get().getStand().getId(),
+                            p.get().getType().getCategory().getId()
+                    );
+
+            try {
+                FirebaseUtils.sendOrderProductClosed(devicesToSendOrderProduct, op.get(), p.get());
+            } catch (JsonProcessingException | InterruptedException | ExecutionException e) {
+                e.printStackTrace(); // TODO HANDLE IT
+            }
             return ResponseEntity.ok(op.get());
         });
     }

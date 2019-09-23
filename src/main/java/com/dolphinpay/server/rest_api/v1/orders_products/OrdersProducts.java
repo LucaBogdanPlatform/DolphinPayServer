@@ -21,6 +21,7 @@ import java.util.Map;
 @Data
 @Builder
 public class OrdersProducts {
+
     public enum StatesIds {
         STATE_NEW(1),
         STATE_PREPARE(2),

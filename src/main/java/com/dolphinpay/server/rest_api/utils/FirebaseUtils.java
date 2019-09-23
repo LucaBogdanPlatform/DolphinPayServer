@@ -32,7 +32,8 @@ public class FirebaseUtils {
     private enum PushNotificationsCode {
         NEW_PRODUCT_ORDER("0"),
         CLOSED_ORDER("1"),
-        READY_ORDER("2");
+        READY_ORDER("2"),
+        CLOSED_ORDER_PRODUCT("3");
         private final String value;
 
         PushNotificationsCode(String i) {
@@ -96,6 +97,28 @@ public class FirebaseUtils {
         }
 
     }
+
+    public static void sendOrderProductClosed(
+            UsersDevices[] usersDevices,
+            OrdersProducts ordersProducts,
+            Products products) throws JsonProcessingException, ExecutionException, InterruptedException {
+        Map<String, String> m = ordersProducts.toMap(null, products.getResponse());
+        m.put("p_code", PushNotificationsCode.CLOSED_ORDER_PRODUCT.value);
+
+        for (UsersDevices u : usersDevices) {
+            Message message = Message
+                    .builder()
+                    .putAllData(m)
+                    .setToken(u.getFirebaseToken())
+                    .setNotification(new Notification(
+                            "Product is ready", "Your product is ready"
+                    )).build();
+
+            String response = FirebaseMessaging.getInstance().sendAsync(message).get();
+
+        }
+    }
+
 
 
     public static void sendOrderReady(UsersDevices byUser, Orders orders) throws JsonProcessingException, ExecutionException, InterruptedException {
