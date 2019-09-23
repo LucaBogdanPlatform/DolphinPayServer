@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.users_devices;
 
+import com.dolphinpay.server.rest_api.v1.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,4 +20,6 @@ interface UsersDevicesRepository extends JpaRepository<UsersDevices, Integer> {
                     "WHERE sr.z_stand = :standId AND ptc.z_id = :categoryId",
             nativeQuery = true)
     UsersDevices[] findAllObservingWithPartnershipObservingCategory(Integer standId, Integer categoryId);
+
+    UsersDevices findByUser(User user);
 }

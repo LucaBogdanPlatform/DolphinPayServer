@@ -2,12 +2,16 @@ package com.dolphinpay.server.rest_api.v1.orders;
 
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
 import com.dolphinpay.server.rest_api.v1.users.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "orders")
@@ -25,6 +29,9 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "z_state", insertable = false)
     private OrdersStates state;
+
+    @Column(name = "z_valid_retire_code")
+    private String retireCode;
 
     @ManyToOne
     @JoinColumn(name = "z_user")
@@ -51,4 +58,12 @@ public class Orders {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "z_last_update_time")
     private Date lastUpdateTime;
+
+    public Map<String, String> toMap() throws JsonProcessingException {
+        Map<String, String> map = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        String order = mapper.writeValueAsString(this);
+        map.put("order", order);
+        return map;
+    }
 }

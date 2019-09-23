@@ -37,4 +37,7 @@ public class OrdersService {
         return ordersRepository.countProductsToPrepareOfOrder(orderId);
     }
 
+    public Optional<Orders> findByRetireCode(String retireOrderCode) {
+        return ordersRepository.findByRetireCode(retireOrderCode);
+    }
 }

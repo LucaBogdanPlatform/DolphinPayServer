@@ -36,4 +36,8 @@ public class OrdersProductsService {
     public OrdersProducts[] findAllUserOpenOrders(Integer userId){
         return ordersProductsRepository.findAllUserOpenOrders(userId);
     }
+
+    public OrdersProducts[] findByOrder(int id) {
+        return ordersProductsRepository.findByOrder(id);
+    }
 }

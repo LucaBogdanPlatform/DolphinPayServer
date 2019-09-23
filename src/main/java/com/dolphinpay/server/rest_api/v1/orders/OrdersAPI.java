@@ -4,9 +4,12 @@ import com.dolphinpay.server.rest_api.utils.FirebaseUtils;
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
 import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONNewOrder;
 import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONOrders;
+import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONRetireOrder;
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProducts;
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProductsIds;
 import com.dolphinpay.server.rest_api.v1.orders_products.OrdersProductsService;
+import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
+import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStatesService;
 import com.dolphinpay.server.rest_api.v1.products.Products;
 import com.dolphinpay.server.rest_api.v1.products.ProductsService;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuthAndUser;
@@ -45,6 +49,10 @@ public class OrdersAPI {
     private OrdersService service;
     @NonNull
     private OrdersProductsService ordersProductsService;
+    @NonNull
+    private OrdersService ordersService;
+    @NonNull
+    private OrdersStatesService ordersStatesService;
     @NonNull
     private ProductsService productsService;
     @NonNull
@@ -74,7 +82,10 @@ public class OrdersAPI {
             Date endPrepareTime = new Date((long) (startPrepareTime.getTime() + 60000 * minutesToWait));
 
 
-            Orders order = service.save(Orders.builder().user(user).expectedEndTime(endPrepareTime).build());
+            Orders order = service.save(Orders.builder()
+                    .user(user)
+                    .retireCode(UUID.fromString(UUID.randomUUID().toString()).toString())
+                    .expectedEndTime(endPrepareTime).build());
 
             for (JSONNewOrder.JSONPair p : newOrder.getProducts()) {
                 Optional<Products> pr = productsService.findById(p.getProductId());
@@ -95,7 +106,7 @@ public class OrdersAPI {
                                 standId, pr.get().getType().getCategory().getId()
                         );
                 try {
-                    FirebaseUtils.sendOrdersProducts(devicesToSendOrderProduct, ordersProducts, pr.get());
+                    FirebaseUtils.sendOrdersProducts(order.getRetireCode(), devicesToSendOrderProduct, ordersProducts, pr.get());
                 } catch (JsonProcessingException | InterruptedException | ExecutionException e) {
                     e.printStackTrace(); // TODO HANDLE IT
                 }
@@ -131,13 +142,63 @@ public class OrdersAPI {
                         .officialClosureTime(op.getOfficialClosureTime())
                         .quantity(op.getQuantity())
                         .state(op.getState())
+                        .retireCode(ordersService.findById(op.getIds().getOrder()).get().getRetireCode())
                         .sumOptionalTime(op.getSumOptionalTime())
                         .products(productsService.findById(op.getIds().getProduct()).get().getResponse())
                         .build()
                 );
             }
+
             return ResponseEntity.ok(orders);
         });
     }
 
+
+    @Transactional
+    @PostMapping(UtilsV1.URLS.userOrders)
+    @ApiOperation(
+            value = "Retire one order"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 400, message = "Invalid token or email or offset or count param"),
+                    @ApiResponse(code = 401, message = "Token elapsed time")
+            }
+    )
+    public ResponseEntity retireOrder(@RequestParam String token,
+                                      @RequestBody JSONRetireOrder data) {
+        return checkAuthAndUser(userService, token, (user) -> {
+            if (data == null || data.getRetireOrderCode() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            Optional<Orders> orderToRetire = ordersService.findByRetireCode(data.getRetireOrderCode());
+
+            if (!orderToRetire.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+
+            OrdersProducts[] productsOfOrderToRetire = ordersProductsService.findByOrder(orderToRetire.get().getId());
+
+            Optional<OrdersStates> ordersStatesRetired = ordersStatesService.findById(4);
+
+            if (!ordersStatesRetired.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+
+            orderToRetire.get().setState(ordersStatesRetired.get());
+            ordersService.save(orderToRetire.get());
+
+            for (OrdersProducts o : productsOfOrderToRetire) {
+                o.setState(ordersStatesRetired.get());
+                ordersProductsService.save(o);
+            }
+
+            try {
+                FirebaseUtils.sendClosedOrder(usersDevicesService.findByUser(orderToRetire.get().getUser()), orderToRetire.get());
+            } catch (JsonProcessingException | InterruptedException | ExecutionException e) {
+                e.printStackTrace(); // TODO HANDLE IT
+            }
+            return ResponseEntity.ok(orderToRetire.get());
+        });
+    }
 }

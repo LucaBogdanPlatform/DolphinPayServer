@@ -27,4 +27,12 @@ interface OrdersProductsRepository extends JpaRepository<OrdersProducts, OrdersP
             nativeQuery = true
     )
     OrdersProducts[] findAllUserOpenOrders(Integer userId);
+
+    @Query(
+            value = "SELECT op.* " +
+                    "FROM orders_products op " +
+                    "WHERE op.z_order = :id",
+            nativeQuery = true
+    )
+    OrdersProducts[] findByOrder(int id);
 }

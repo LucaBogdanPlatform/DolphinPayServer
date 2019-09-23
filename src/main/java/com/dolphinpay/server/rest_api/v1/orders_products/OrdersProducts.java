@@ -71,20 +71,26 @@ public class OrdersProducts {
     private Date lastUpdateTime;
 
 
-    public Map<String, String> toMap(Products.JSONProducts products) throws JsonProcessingException {
+    public Map<String, String> toMap(
+            String orderRetireCode,
+            Products.JSONProducts products) throws JsonProcessingException {
         Map<String, String> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
-        String order = mapper.writeValueAsString(getResponse(products));
+        String order = mapper.writeValueAsString(getResponse(orderRetireCode, products));
         map.put("order", order);
         return map;
     }
 
-    public JSONOrderProduct getResponse(Products.JSONProducts products) {
+    public JSONOrderProduct getResponse(
+            String orderRetireCode,
+            Products.JSONProducts products
+    ) {
         return JSONOrderProduct.builder()
                 .id(this.ids.getOrder())
                 .quantity(this.quantity)
                 .products(products)
                 .state(this.state)
+                .retireCode(orderRetireCode)
                 .expectedStartTime(this.expectedStartTime)
                 .expectedEndTime(this.expectedEndTime)
                 .officialClosureTime(this.officialClosureTime)
@@ -101,6 +107,7 @@ public class OrdersProducts {
         private Products.JSONProducts products;
         private OrdersStates state;
         private int quantity;
+        private String retireCode;
         private Date expectedStartTime;
         private Date expectedEndTime;
         private Date officialClosureTime;

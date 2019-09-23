@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.orders_products;
 
+import com.dolphinpay.server.rest_api.utils.FirebaseUtils;
 import com.dolphinpay.server.rest_api.v1.UtilsV1;
 import com.dolphinpay.server.rest_api.v1._JSONEntities.JSONTimestamp;
 import com.dolphinpay.server.rest_api.v1.orders.Orders;
@@ -7,6 +8,8 @@ import com.dolphinpay.server.rest_api.v1.orders.OrdersService;
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStates;
 import com.dolphinpay.server.rest_api.v1.orders_states.OrdersStatesService;
 import com.dolphinpay.server.rest_api.v1.users.UserService;
+import com.dolphinpay.server.rest_api.v1.users_devices.UsersDevicesService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import static com.dolphinpay.server.rest_api.utils.GoogleUtils.checkAuthAndUser;
 
@@ -40,6 +44,9 @@ public class OrdersProductsAPI {
     private UserService userService;
     @NonNull
     private OrdersStatesService ordersStatesService;
+    @NonNull
+    private UsersDevicesService usersDevicesService;
+
 
     @GetMapping(UtilsV1.URLS.roomOrders)
     @ApiOperation(
@@ -108,6 +115,7 @@ public class OrdersProductsAPI {
             }
 
             op.get().setOfficialClosureTime(new Date(closureTime.getClosureTime()));
+            op.get().setState(ordersStatesService.findById(3).get());
             service.save(op.get());
 
             int countProductsOpenOfOrder = ordersService.countProductsToPrepareOfOrder(orderId);
@@ -119,8 +127,14 @@ public class OrdersProductsAPI {
                 }
 
                 ord.get().setOfficialClosureTime(op.get().getOfficialClosureTime());
+                ord.get().setState(op.get().getState());
                 ordersService.save(ord.get());
-                // TODO user of end ordination
+
+                try {
+                    FirebaseUtils.sendOrderReady(usersDevicesService.findByUser(ord.get().getUser()), ord.get());
+                } catch (JsonProcessingException | InterruptedException | ExecutionException e) {
+                    e.printStackTrace(); // TODO HANDLE IT
+                }
             }
 
             return ResponseEntity.ok(op.get());

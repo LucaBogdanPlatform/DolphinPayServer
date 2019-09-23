@@ -1,5 +1,6 @@
 package com.dolphinpay.server.rest_api.v1.users_devices;
 
+import com.dolphinpay.server.rest_api.v1.users.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class UsersDevicesService {
 
     public void deleteById(Integer id) {
         usersDevicesRepository.deleteById(id);
+    }
+
+    public UsersDevices findByUser(User user) {
+        return usersDevicesRepository.findByUser(user);
     }
 
     public UsersDevices findByUserId(int userId) {

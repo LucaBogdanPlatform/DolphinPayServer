@@ -3,6 +3,8 @@ package com.dolphinpay.server.rest_api.v1.orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
     @Query(
@@ -22,4 +24,12 @@ interface OrdersRepository extends JpaRepository<Orders, Integer> {
             nativeQuery = true
     )
     int countProductsToPrepareOfOrder(Integer orderId);
+
+    @Query(
+            value = "SELECT o.* " +
+                    "FROM orders o " +
+                    "WHERE o.z_valid_retire_code = :retireOrderCode",
+            nativeQuery = true
+    )
+    Optional<Orders> findByRetireCode(String retireOrderCode);
 }
